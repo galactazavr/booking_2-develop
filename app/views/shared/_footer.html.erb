@@ -1,0 +1,53 @@
+<!-- Подвал Отели.ру -->
+<footer class="bg-gray-50 border-t border-gray-200 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <!-- О компании -->
+      <div class="col-span-1 md:col-span-2">
+        <div class="flex items-center mb-4">
+          <svg class="h-6 w-auto text-primary mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zm-9-1a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+          </svg>
+          <span class="font-bold text-xl tracking-tight text-primary">Отели<span class="text-secondary">.ру</span></span>
+        </div>
+        <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
+          Ваш надежный сервис для поиска и бронирования жилья по всему миру. Мы делаем путешествия удобными, безопасными и незабываемыми.
+        </p>
+      </div>
+
+      <!-- Ссылки 1 -->
+      <div>
+        <h3 class="font-semibold text-dark mb-4">Поддержка</h3>
+        <ul class="space-y-3">
+          <li><%= link_to "Центр помощи", help_page_path, class: "text-gray-400 hover:text-primary text-sm transition-colors" %></li>
+          <li><%= link_to "Отмена бронирования", cancellation_page_path, class: "text-gray-400 hover:text-primary text-sm transition-colors" %></li>
+          <li><%= link_to "Связаться с нами", contact_page_path, class: "text-gray-400 hover:text-primary text-sm transition-colors" %></li>
+        </ul>
+      </div>
+
+      <!-- Ссылки 2 -->
+      <div>
+        <h3 class="font-semibold text-dark mb-4">Для партнеров</h3>
+        <ul class="space-y-3">
+          <li>
+            <%= link_to "Добавить свой отель", new_user_registration_path(account_type: :supervisor), class: "text-gray-400 hover:text-primary text-sm transition-colors", data: { turbo: false } %>
+          </li>
+          <li><%= link_to "Портал отельеров", new_user_registration_path(account_type: :supervisor), class: "text-gray-400 hover:text-primary text-sm transition-colors", data: { turbo: false } %></li>
+          <li><%= link_to "Условия сотрудничества", terms_page_path, class: "text-gray-400 hover:text-primary text-sm transition-colors" %></li>
+        </ul>
+      </div>
+
+    </div>
+    
+    <div class="border-t border-gray-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+      <p class="text-gray-400 text-sm">
+        &copy; <%= Time.current.year %> Отели.ру. Все права защищены.
+      </p>
+      <div class="flex space-x-6 mt-4 md:mt-0">
+        <%= link_to "Условия использования", terms_page_path, class: "text-gray-400 hover:text-dark transition-colors text-sm" %>
+        <%= link_to "Политика конфиденциальности", privacy_page_path, class: "text-gray-400 hover:text-dark transition-colors text-sm" %>
+      </div>
+    </div>
+  </div>
+</footer>
