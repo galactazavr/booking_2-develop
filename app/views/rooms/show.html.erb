@@ -1,0 +1,62 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="mb-6">
+    <%= link_to '← Назад к номерам', hotel_rooms_path(@hotel), class: 'text-primary hover:text-primary-dark font-medium text-sm' %>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <!-- Изображение-заглушка -->
+    <div class="h-64 bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
+      <% if @room.photos.attached? %>
+        <%= image_tag @room.photos.first, class: 'w-full h-full object-cover' %>
+      <% else %>
+        <svg class="w-24 h-24 text-primary/20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <% end %>
+    </div>
+
+    <div class="p-8">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h1 class="text-2xl font-bold text-dark"><%= @room.name %></h1>
+          <p class="text-gray-500 mt-1"><%= @hotel.name %> · <%= @hotel.full_address %></p>
+        </div>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-light text-primary">
+          <%= @room.room_type %>
+        </span>
+      </div>
+
+      <!-- Характеристики -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-dark">👥 <%= @room.capacity %></p>
+          <p class="text-xs text-gray-500 mt-1">Гостей</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-dark">📐 <%= @room.area %></p>
+          <p class="text-xs text-gray-500 mt-1">м²</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-primary"><%= @room.price_per_night.to_i %> ₽</p>
+          <p class="text-xs text-gray-500 mt-1">за ночь</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-2xl font-bold text-dark"><%= @room.available? ? '✅' : '❌' %></p>
+          <p class="text-xs text-gray-500 mt-1"><%= @room.available? ? 'Свободен' : 'Занят' %></p>
+        </div>
+      </div>
+
+      <% if @room.description.present? %>
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-dark mb-2">Описание</h3>
+          <p class="text-gray-600 leading-relaxed"><%= @room.description %></p>
+        </div>
+      <% end %>
+
+      <% if @room.available? && user_signed_in? && current_user.user? %>
+        <div class="pt-6 border-t border-gray-100">
+          <%= link_to 'Забронировать', new_booking_path(room_id: @room.id),
+              class: 'inline-block bg-primary hover:bg-primary-dark text-white font-bold px-8 py-4 rounded-xl transition-colors' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

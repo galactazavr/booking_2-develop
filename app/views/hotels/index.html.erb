@@ -1,0 +1,127 @@
+<!-- Блок Hero (Поиск) -->
+<section class="relative bg-primary-light/30 pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
+  
+  <!-- Декоративные элементы фона -->
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+    <div class="absolute -top-[20%] -right-[10%] w-[50%] h-[100%] rounded-full bg-primary/5 blur-3xl"></div>
+    <div class="absolute top-[40%] -left-[10%] w-[40%] h-[80%] rounded-full bg-secondary/5 blur-3xl"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-dark tracking-tight mb-4">
+      Найдите идеальное <span class="text-primary">жилье</span>
+    </h1>
+    <p class="text-lg md:text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+      От уютных апартаментов до роскошных отелей – бронируйте лучшие места по всему миру
+    </p>
+
+    <!-- Форма поиска -->
+    <div class="max-w-4xl mx-auto bg-white p-2 rounded-2xl shadow-card md:rounded-full border border-gray-100">
+      <%= form_tag search_hotels_path, method: :get, class: "flex flex-col md:flex-row md:items-center" do %>
+        
+        <!-- Локация -->
+        <div class="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100 relative group">
+          <label for="city" class="block text-xs font-bold tracking-wider text-dark uppercase mb-1">Куда</label>
+          <%= text_field_tag :city, params[:city], placeholder: "Город или отель", class: "w-full border-none p-0 text-dark placeholder-gray-400 focus:ring-0 text-base font-medium", id: "city" %>
+        </div>
+
+        <!-- Заезд -->
+        <div class="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100">
+          <label for="checkin" class="block text-xs font-bold tracking-wider text-dark uppercase mb-1">Заезд</label>
+          <input type="date" name="checkin" id="checkin" class="w-full border-none p-0 text-dark focus:ring-0 text-base font-medium bg-transparent cursor-pointer" min="<%= Date.today %>">
+        </div>
+
+        <!-- Выезд -->
+        <div class="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100">
+          <label for="checkout" class="block text-xs font-bold tracking-wider text-dark uppercase mb-1">Выезд</label>
+          <input type="date" name="checkout" id="checkout" class="w-full border-none p-0 text-dark focus:ring-0 text-base font-medium bg-transparent cursor-pointer" min="<%= Date.tomorrow %>">
+        </div>
+
+        <!-- Гости -->
+        <div class="flex-1 px-6 py-3 md:border-r-0">
+          <label for="guests" class="block text-xs font-bold tracking-wider text-dark uppercase mb-1">Кто едет</label>
+          <select name="guests" id="guests" class="w-full border-none p-0 text-dark focus:ring-0 text-base font-medium bg-transparent cursor-pointer">
+            <option value="1">1 гость</option>
+            <option value="2" selected>2 гостя</option>
+            <option value="3">3 гостя</option>
+            <option value="4">4 гостя</option>
+            <option value="5">5+ гостей</option>
+          </select>
+        </div>
+
+        <!-- Кнопка поиска -->
+        <div class="p-2 md:pl-4">
+          <button type="submit" class="w-full md:w-auto bg-primary hover:bg-primary-dark text-white rounded-xl md:rounded-full px-8 py-4 font-bold text-lg transition-colors flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <span class="md:hidden">Найти</span>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Новые / Рекомендуемые отели -->
+<% if @hotels.any? %>
+  <section class="py-16 md:py-20 bg-gray-50 border-t border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-end mb-8">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-dark mb-2">Рекомендуем вам</h2>
+          <p class="text-gray-500">Свежие предложения с отличными отзывами</p>
+        </div>
+        <%= link_to "Смотреть все", search_hotels_path, class: "hidden md:inline-flex items-center text-primary font-medium hover:text-primary-dark transition-colors" %>
+      </div>
+
+      <!-- Сетка карточек отелей -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% @hotels.first(8).each do |hotel| %>
+          <%= render partial: 'hotel_card', locals: { hotel: hotel } %>
+        <% end %>
+      </div>
+      
+      <div class="mt-10 text-center md:hidden">
+        <%= link_to "Смотреть все", search_hotels_path, class: "inline-block w-full bg-white border border-gray-200 text-dark font-medium py-3 rounded-xl shadow-sm" %>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<!-- CTA секция -->
+<section class="py-16 md:py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-primary rounded-3xl overflow-hidden relative shadow-lg">
+      <div class="absolute top-0 right-0 w-1/2 h-full opacity-10">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full fill-current text-white"><polygon points="0,100 100,0 100,100"/></svg>
+      </div>
+      <div class="relative z-10 px-8 py-12 md:p-16 flex flex-col md:flex-row items-center justify-between">
+        <div class="mb-8 md:mb-0 max-w-xl">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Сдаете жилье?</h2>
+          <p class="text-primary-light text-lg mb-0">
+            Зарегистрируйтесь как супервайзор и начните принимать гостей со всего мира уже сегодня.
+          </p>
+        </div>
+        <div>
+          <%= link_to "Добавить объект", new_user_registration_path(account_type: :supervisor), class: "inline-block bg-white text-primary font-bold px-8 py-4 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all", data: { turbo: false } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Скрипт для работы кнопки избранного -->
+<script>
+  function toggleFav(id){
+    fetch('/favorites/toggle/' + id, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+      // Для простой обратной связи можно перезагрузить страницу или просто показать уведомление
+      // В идеале: поменять иконку на заполненную (здесь просто перезагрузим)
+      location.reload();
+    });
+  }
+</script>
