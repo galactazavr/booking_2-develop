@@ -1,0 +1,125 @@
+<!-- Страница поиска отелей -->
+
+<!-- Шапка поиска (Mini Search Bar) -->
+<div class="bg-white border-b border-gray-100 sticky top-[80px] z-40 py-4 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Форма поиска в одну строку -->
+    <%= form_tag search_hotels_path, method: :get, class: "flex items-center gap-2 w-full max-w-full bg-gray-50 p-1.5 rounded-full border border-gray-200 shadow-inner" do %>
+      
+      <!-- Локация -->
+      <div class="flex-1 relative flex items-center pl-4 pr-2 py-1.5 bg-white rounded-full border border-gray-100 shadow-sm">
+        <svg class="w-4 h-4 text-gray-400 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <%= text_field_tag :city, params[:city], placeholder: "Куда едем?", class: "w-full border-none p-0 text-sm focus:ring-0 bg-transparent text-dark font-medium" %>
+      </div>
+
+      <!-- Даты и Гости (на мобильных скрыты для экономии места) -->
+      <div class="hidden md:flex flex-1 items-center gap-2">
+        <div class="flex-1 px-3 py-1.5 bg-white rounded-full border border-gray-100 shadow-sm">
+          <input type="date" name="checkin" value="<%= params[:checkin] %>" class="w-full border-none p-0 text-xs focus:ring-0 bg-transparent text-dark">
+        </div>
+        <div class="flex-1 px-3 py-1.5 bg-white rounded-full border border-gray-100 shadow-sm">
+          <input type="date" name="checkout" value="<%= params[:checkout] %>" class="w-full border-none p-0 text-xs focus:ring-0 bg-transparent text-dark">
+        </div>
+        <div class="flex-1 px-3 py-1.5 bg-white rounded-full border border-gray-100 shadow-sm">
+          <select name="guests" class="w-full border-none p-0 text-xs focus:ring-0 bg-transparent text-dark">
+            <option value="1" <%= 'selected' if params[:guests] == '1' %>>1 гость</option>
+            <option value="2" <%= 'selected' if params[:guests] == '2' || params[:guests].blank? %>>2 гостя</option>
+            <option value="3" <%= 'selected' if params[:guests] == '3' %>>3 гостя</option>
+            <option value="4" <%= 'selected' if params[:guests] == '4' %>>4 гостя</option>
+            <option value="5" <%= 'selected' if params[:guests] == '5' %>>5+ гостей</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Кнопка поиска -->
+      <button type="submit" class="bg-primary hover:bg-primary-dark text-white rounded-full p-2.5 transition-colors shrink-0 shadow-sm">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </button>
+      
+    <% end %>
+
+    <!-- Информационная строка -->
+    <div class="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <h1 class="text-xl md:text-2xl font-bold text-dark">
+        <% category_label = case @category; when 'хостелы' then 'Хостелы'; when 'апартаменты' then 'Апартаменты'; else 'Отели'; end %>
+        <%= @city.present? ? "#{category_label} в городе #{@city}" : "Все #{category_label.downcase}" %>
+        <span class="text-sm font-normal text-gray-400 ml-2"><%= @hotels.total_count if @hotels.respond_to?(:total_count) %> вариантов</span>
+      </h1>
+      
+      <!-- Сортировка по цене и Табы -->
+      <div class="flex flex-wrap items-center gap-4">
+        <!-- Сортировка -->
+        <div class="flex items-center gap-2">
+          <label for="sort" class="text-sm text-gray-500 font-medium">Сортировка:</label>
+          <select id="sort" onchange="window.location.href = this.value" class="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-sm font-medium text-dark focus:ring-1 focus:ring-primary cursor-pointer">
+            <option value="<%= url_for(params.permit(:city, :checkin, :checkout, :guests, :min_price, :max_price, :category).merge(sort: 'price_asc')) %>" <%= 'selected' if @sort == 'price_asc' %>>Сначала дешевые</option>
+            <option value="<%= url_for(params.permit(:city, :checkin, :checkout, :guests, :min_price, :max_price, :category).merge(sort: 'price_desc')) %>" <%= 'selected' if @sort == 'price_desc' %>>Сначала дорогие</option>
+          </select>
+        </div>
+
+        <!-- Фильтры (табы) -->
+        <div class="flex bg-gray-50 p-1 rounded-lg border border-gray-200">
+          <%= link_to "Отели", search_hotels_path(params.permit(:city, :checkin, :checkout, :guests, :min_price, :max_price, :sort).merge(category: 'отели')), 
+              class: "px-4 py-1.5 rounded-md text-sm font-medium transition-colors #{(@category.blank? || @category == 'отели') ? 'bg-white shadow-sm text-dark font-bold' : 'text-gray-500 hover:text-dark'}" %>
+          <%= link_to "Хостелы", search_hotels_path(params.permit(:city, :checkin, :checkout, :guests, :min_price, :max_price, :sort).merge(category: 'хостелы')), 
+              class: "px-4 py-1.5 rounded-md text-sm font-medium transition-colors #{@category == 'хостелы' ? 'bg-white shadow-sm text-dark font-bold' : 'text-gray-500 hover:text-dark'}" %>
+          <%= link_to "Апартаменты", search_hotels_path(params.permit(:city, :checkin, :checkout, :guests, :min_price, :max_price, :sort).merge(category: 'апартаменты')), 
+              class: "px-4 py-1.5 rounded-md text-sm font-medium transition-colors #{@category == 'апартаменты' ? 'bg-white shadow-sm text-dark font-bold' : 'text-gray-500 hover:text-dark'}" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Основная область с карточками -->
+<div class="bg-gray-50 min-h-screen pt-8 pb-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <% if @hotels.any? %>
+      <!-- Сетка результатов -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% @hotels.each do |hotel| %>
+          <%= render partial: 'hotel_card', locals: { hotel: hotel } %>
+        <% end %>
+      </div>
+
+      <!-- Пагинация -->
+      <div class="mt-12 flex justify-center">
+        <%= paginate @hotels if @hotels.respond_to?(:total_pages) %>
+      </div>
+      
+    <% else %>
+      <!-- Пустое состояние -->
+      <div class="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100 max-w-2xl mx-auto mt-8">
+        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-10 h-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-dark mb-2">Ничего не найдено</h2>
+        <p class="text-gray-500 mb-6">Попробуйте изменить параметры поиска, выбрать другие даты или убрать фильтры.</p>
+        <%= link_to "Очистить поиск", search_hotels_path, class: "inline-block bg-primary hover:bg-primary-dark text-white font-medium px-6 py-2.5 rounded-lg transition-colors" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<!-- Скрипт для работы кнопки избранного -->
+<script>
+  function toggleFav(id){
+    fetch('/favorites/toggle/' + id, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+      location.reload();
+    });
+  }
+</script>
