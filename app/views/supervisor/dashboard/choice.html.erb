@@ -1,0 +1,30 @@
+<div class="max-w-3xl mx-auto py-8">
+  <div class="text-center mb-10">
+    <h1 class="text-3xl font-bold text-dark mb-2">Что вы хотите сдавать?</h1>
+    <p class="text-gray-500">Выберите тип объекта для добавления в систему</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Отель -->
+    <%= link_to supervisor_new_hotel_path, class: "group bg-white p-8 rounded-2xl border-2 border-gray-100 shadow-sm hover:border-primary hover:shadow-md transition-all text-center block" do %>
+      <div class="w-20 h-20 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+        <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      </div>
+      <h3 class="text-xl font-bold text-dark mb-2 group-hover:text-primary transition-colors">Отель или Гостиница</h3>
+      <p class="text-gray-500 text-sm">Несколько номеров, ресепшен, общие зоны, персонал.</p>
+    <% end %>
+
+    <!-- Апартаменты -->
+    <%= link_to supervisor_new_property_path, class: "group bg-white p-8 rounded-2xl border-2 border-gray-100 shadow-sm hover:border-primary hover:shadow-md transition-all text-center block" do %>
+      <div class="w-20 h-20 bg-red-50 text-secondary rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+        <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      </div>
+      <h3 class="text-xl font-bold text-dark mb-2 group-hover:text-primary transition-colors">Квартира или Дом</h3>
+      <p class="text-gray-500 text-sm">Отдельное жилье, сдается целиком для одной компании.</p>
+    <% end %>
+  </div>
+
+  <div class="mt-8 text-center">
+    <%= link_to "Отмена", supervisor_root_path, class: "text-gray-500 hover:text-dark font-medium" %>
+  </div>
+</div>

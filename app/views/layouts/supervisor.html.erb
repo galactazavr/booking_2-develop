@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кабинет Партнера — Отели.ру</title>
+  <meta name="csrf-token" content="<%= form_authenticity_token %>">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            primary: { DEFAULT: '#0057FF', dark: '#0043CC' },
+            secondary: '#FF5A5F',
+            dark: '#111827'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #F9FAFB; color: #111827; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+  
+  <!-- Боковая панель -->
+  <aside class="w-full md:w-64 bg-white border-r border-gray-200 shrink-0 md:min-h-screen flex flex-col">
+    <div class="p-6 border-b border-gray-200">
+      <a href="/" class="flex items-center">
+        <svg class="h-6 w-auto text-primary mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zm-9-1a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/></svg>
+        <span class="font-bold text-xl tracking-tight text-primary">Отели<span class="text-secondary">.Партнер</span></span>
+      </a>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-1">
+      <a href="/supervisor" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg <%= current_page?('/supervisor') ? 'bg-blue-50 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' %>">
+        <svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Мои объекты
+      </a>
+      <%= link_to supervisor_bookings_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg #{current_page?(supervisor_bookings_path) ? 'bg-blue-50 text-primary font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
+        <svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Бронирования
+      <% end %>
+
+      <div class="border-t border-gray-200 my-4"></div>
+
+      <%= link_to root_path, class: "flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900" do %>
+        <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+        На основной сайт
+      <% end %>
+      <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center w-full px-4 py-3 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 text-left border-0 bg-transparent cursor-pointer", form: { class: "w-full", data: { turbo: false } } do %>
+        <svg class="mr-3 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+        Выход
+      <% end %>
+    </nav>
+  </aside>
+
+  <!-- Рабочая область -->
+  <main class="flex-1 overflow-y-auto">
+    <% flash.each do |key, message| %>
+      <div class="m-6 mb-0 p-4 rounded-lg <%= key.to_s == 'notice' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800' %>">
+        <%= message %>
+      </div>
+    <% end %>
+
+    <div class="p-6 md:p-10">
+      <%= yield %>
+    </div>
+  </main>
+
+</body>
+</html>

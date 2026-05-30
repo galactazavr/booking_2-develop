@@ -1,0 +1,68 @@
+<div class="flex justify-between items-center mb-8">
+  <div>
+    <h1 class="text-3xl font-bold text-dark">Мои объекты</h1>
+    <p class="text-gray-500 mt-1">Управляйте вашими отелями и апартаментами</p>
+  </div>
+  <%= link_to "Добавить объект", supervisor_choice_path, class: "bg-primary hover:bg-primary-dark text-white font-bold py-2.5 px-6 rounded-lg transition-colors shadow-sm" %>
+</div>
+
+<!-- Статистика -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+    <div class="text-sm font-medium text-gray-500 mb-1">Всего объектов</div>
+    <div class="text-3xl font-bold text-dark"><%= @hotels.count + @properties.count %></div>
+  </div>
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+    <div class="text-sm font-medium text-gray-500 mb-1">Активные отели</div>
+    <div class="text-3xl font-bold text-green-600"><%= @hotels.count(&:active?) %></div>
+  </div>
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+    <div class="text-sm font-medium text-gray-500 mb-1">На модерации</div>
+    <div class="text-3xl font-bold text-yellow-500"><%= @hotels.count(&:review?) + @properties.count(&:review?) %></div>
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="px-6 py-5 border-b border-gray-100 bg-gray-50">
+    <h3 class="font-bold text-dark text-lg">Список объектов</h3>
+  </div>
+  
+  <% combined_objects = (@hotels + @properties).sort_by(&:created_at).reverse %>
+  <% if combined_objects.any? %>
+    <div class="divide-y divide-gray-100">
+      <% combined_objects.each do |obj| %>
+        <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0 flex items-center justify-center text-xl">
+              <% if obj.photos.attached? && obj.photos.first.present? %>
+                <%= image_tag obj.photos.first, class: "w-full h-full object-cover" %>
+              <% else %>
+                🏨
+              <% end %>
+            </div>
+            <div>
+              <div class="text-xs text-gray-500 font-medium mb-1"><%= obj.is_a?(Hotel) ? 'Отель' : 'Апартаменты' %></div>
+              <div class="font-bold text-dark text-lg"><%= obj.name %></div>
+              <div class="text-sm text-gray-500"><%= obj.city %></div>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-6">
+            <% status_class = case obj.status when 'active' then 'bg-green-100 text-green-800' when 'pending' then 'bg-yellow-100 text-yellow-800' else 'bg-red-100 text-red-800' end %>
+            <span class="px-3 py-1 text-xs font-bold rounded-full <%= status_class %>">
+              <%= obj.status_label %>
+            </span>
+            
+            <%= link_to "Редактировать", (obj.is_a?(Hotel) ? supervisor_edit_hotel_path(obj) : supervisor_edit_property_path(obj)), class: "text-sm font-medium text-primary hover:text-primary-dark" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="p-12 text-center">
+      <div class="text-4xl mb-4">🏠</div>
+      <h3 class="text-lg font-bold text-dark mb-2">У вас еще нет объектов</h3>
+      <p class="text-gray-500">Добавьте свой первый отель или апартаменты, чтобы начать получать бронирования.</p>
+    </div>
+  <% end %>
+</div>

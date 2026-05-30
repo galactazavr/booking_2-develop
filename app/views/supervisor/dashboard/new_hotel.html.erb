@@ -1,0 +1,83 @@
+<div class="max-w-2xl mx-auto py-8">
+  <div class="mb-8">
+    <%= link_to supervisor_root_path, class: "inline-flex items-center text-sm font-medium text-gray-500 hover:text-dark transition-colors mb-4" do %>
+      <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+      Назад к списку
+    <% end %>
+    <h1 class="text-3xl font-bold text-dark"><%= @hotel.persisted? ? "Редактирование отеля" : "Добавление отеля" %></h1>
+    <p class="text-gray-500 mt-1">Заполните подробную информацию о вашем объекте размещения</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+    <% form_url = @hotel.persisted? ? supervisor_update_hotel_path(@hotel) : supervisor_create_hotel_path %>
+    <%= form_with(model: @hotel, url: form_url, method: (@hotel.persisted? ? :patch : :post), local: true, class: "space-y-6") do |f| %>
+      
+      <% if @hotel.errors.any? %>
+        <div class="p-4 bg-red-50 rounded-xl text-red-800 text-sm space-y-1">
+          <p class="font-bold">Пожалуйста, исправьте следующие ошибки:</p>
+          <ul class="list-disc pl-5">
+            <% @hotel.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="space-y-1">
+        <%= f.label :name, "Название отеля", class: "block text-sm font-bold text-dark" %>
+        <%= f.text_field :name, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", placeholder: "Например: Гранд Отель Европа", required: true %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-1">
+          <%= f.label :hotel_type, "Тип объекта", class: "block text-sm font-bold text-dark" %>
+          <%= f.select :hotel_type, ["Отель", "Хостел", "База отдыха", "Апарт-отель", "Гостевой дом", "Глэмпинг"], {}, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark bg-white cursor-pointer" %>
+        </div>
+        <div class="space-y-1">
+          <%= f.label :chain, "Сеть (если есть)", class: "block text-sm font-bold text-dark" %>
+          <%= f.text_field :chain, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", placeholder: "Например: Hilton" %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-1">
+          <%= f.label :city, "Город", class: "block text-sm font-bold text-dark" %>
+          <%= f.text_field :city, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", placeholder: "Москва", required: true %>
+        </div>
+        <div class="space-y-1">
+          <%= f.label :address, "Адрес", class: "block text-sm font-bold text-dark" %>
+          <%= f.text_field :address, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", placeholder: "ул. Тверская, 1", required: true %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-1">
+          <%= f.label :base_price_per_night, "Базовая цена за ночь (₽)", class: "block text-sm font-bold text-dark" %>
+          <%= f.number_field :base_price_per_night, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", placeholder: "5000", required: true, min: 0 %>
+        </div>
+        <div class="space-y-1">
+          <%= f.label :available_from, "Доступен с", class: "block text-sm font-bold text-dark" %>
+          <%= f.date_field :available_from, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", required: true %>
+        </div>
+        <div class="space-y-1">
+          <%= f.label :available_to, "Доступен до", class: "block text-sm font-bold text-dark" %>
+          <%= f.date_field :available_to, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", required: true %>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <%= f.label :description, "Описание", class: "block text-sm font-bold text-dark" %>
+        <%= f.text_area :description, rows: 4, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", placeholder: "Расскажите гостям о вашем отеле..." %>
+      </div>
+
+      <div class="space-y-1">
+        <%= f.label :photos, "Фотографии объекта", class: "block text-sm font-bold text-dark" %>
+        <%= f.file_field :photos, multiple: true, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark bg-white cursor-pointer" %>
+      </div>
+
+      <div class="pt-6 border-t border-gray-100">
+        <%= f.submit @hotel.persisted? ? "Сохранить изменения" : "Добавить объект", class: "w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 px-6 rounded-xl transition-colors cursor-pointer text-lg" %>
+      </div>
+    <% end %>
+  </div>
+</div>
