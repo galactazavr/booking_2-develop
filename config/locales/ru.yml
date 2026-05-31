@@ -1,0 +1,171 @@
+ru:
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%d %b"
+      long: "%d %B %Y г."
+    day_names:
+      - Воскресенье
+      - Понедельник
+      - Вторник
+      - Среда
+      - Четверг
+      - Пятница
+      - Суббота
+    abbr_day_names:
+      - Вс
+      - Пн
+      - Вт
+      - Ср
+      - Чт
+      - Пт
+      - Сб
+    month_names:
+      - ~
+      - Января
+      - Февраля
+      - Марта
+      - Апреля
+      - Мая
+      - Июня
+      - Июля
+      - Августа
+      - Сентября
+      - Октября
+      - Ноября
+      - Декабря
+    abbr_month_names:
+      - ~
+      - янв.
+      - февр.
+      - мар.
+      - апр.
+      - мая
+      - июн.
+      - июл.
+      - авг.
+      - сент.
+      - окт.
+      - нояб.
+      - дек.
+    order:
+      - :day
+      - :month
+      - :year
+
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y, %H:%M"
+
+  number:
+    currency:
+      format:
+        unit: "₽"
+        format: "%n %u"
+        separator: "."
+        delimiter: " "
+        precision: 0
+
+  activerecord:
+    models:
+      user: Пользователь
+      hotel: Отель
+      room: Номер
+      booking: Бронирование
+      review: Отзыв
+      property: Объект
+      favorite: Избранное
+    attributes:
+      user:
+        email: Email
+        password: Пароль
+        password_confirmation: Подтверждение пароля
+        first_name: Имя
+        last_name: Фамилия
+        phone: Телефон
+        role: Роль
+      hotel:
+        name: Название
+        hotel_type: Тип
+        city: Город
+        address: Адрес
+        description: Описание
+        phone: Телефон
+        email: Email
+        rating: Рейтинг
+        base_price_per_night: Цена за ночь
+        available_from: Доступен с
+        available_to: Доступен до
+      room:
+        name: Название
+        room_type: Тип номера
+        capacity: Вместимость
+        area: Площадь
+        price_per_night: Цена за ночь
+        description: Описание
+        available: Доступен
+      booking:
+        check_in: Дата заезда
+        check_out: Дата выезда
+        guests_count: Количество гостей
+        total_price: Итого
+        status: Статус
+        special_requests: Особые пожелания
+      review:
+        rating: Оценка
+        body: Текст отзыва
+      property:
+        name: Название
+        property_type: Тип
+        city: Город
+        address: Адрес
+        description: Описание
+        rooms_count: Количество комнат
+        area: Площадь
+        guests_capacity: Вместимость
+        base_price_per_night: Цена за ночь
+        available_from: Доступен с
+        available_to: Доступен до
+    errors:
+      models:
+        booking:
+          attributes:
+            base:
+              overlap: "Номер уже забронирован на выбранные даты"
+
+  enums:
+    user:
+      role:
+        user: Клиент
+        supervisor: Менеджер
+        admin: Администратор
+    booking:
+      status:
+        pending: Ожидает подтверждения
+        confirmed: Подтверждено
+        cancelled: Отменено
+        completed: Завершено
+    hotel:
+      status:
+        review: На модерации
+        active: Активен
+        rejected: Отклонён
+
+  helpers:
+    submit:
+      create: Создать
+      update: Сохранить
+      booking:
+        create: Забронировать
+      review:
+        create: Оставить отзыв
+
+  flash:
+    booking_created: "Бронирование успешно создано!"
+    booking_cancelled: "Бронирование отменено."
+    booking_confirmed: "Бронирование подтверждено."
+    not_authorized: "У вас нет доступа к этому действию."
+    admin_only: "Доступ разрешён только администратору."
+    supervisor_only: "Доступ запрещён. Только для менеджеров."
