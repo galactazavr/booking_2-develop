@@ -1,0 +1,60 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-dark">Все бронирования</h1>
+    <p class="text-gray-500 mt-1">Панель администратора — полный список бронирований системы</p>
+  </div>
+
+  <% if @bookings.any? %>
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-100">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">ID</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Гость</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Отель / Номер</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Даты</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Сумма</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Статус</th>
+            <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50">
+          <% @bookings.each do |booking| %>
+            <tr class="hover:bg-gray-50/50 transition-colors">
+              <td class="px-6 py-4 text-sm font-medium text-dark">#<%= booking.id %></td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                <span class="font-medium"><%= booking.user.full_name %></span><br>
+                <span class="text-xs text-gray-400"><%= booking.user.email %></span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                <span class="font-medium text-dark"><%= booking.room.hotel.name %></span><br>
+                <span class="text-xs text-gray-400"><%= booking.room.short_info %></span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                <%= booking.check_in.strftime('%d.%m') %> — <%= booking.check_out.strftime('%d.%m.%Y') %>
+              </td>
+              <td class="px-6 py-4 text-sm font-semibold text-dark"><%= number_to_currency(booking.total_price, unit: '₽', format: '%n %u', precision: 0) %></td>
+              <td class="px-6 py-4">
+                <% status_colors = { 'pending' => 'bg-yellow-100 text-yellow-800', 'confirmed' => 'bg-green-100 text-green-800', 'cancelled' => 'bg-red-100 text-red-800', 'completed' => 'bg-blue-100 text-blue-800' } %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= status_colors[booking.status] %>">
+                  <%= booking.status_label %>
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <%= link_to 'Подробнее', admin_booking_path(booking), class: 'text-primary hover:text-primary-dark text-sm font-medium' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-6 flex justify-center">
+      <%= paginate @bookings, theme: 'tailwind' %>
+    </div>
+  <% else %>
+    <div class="bg-white rounded-2xl shadow-card p-12 text-center">
+      <h3 class="text-lg font-semibold text-gray-500">Бронирований в системе пока нет</h3>
+    </div>
+  <% end %>
+</div>

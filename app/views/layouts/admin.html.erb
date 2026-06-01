@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель Администратора — Отели.админ</title>
+  <meta name="csrf-token" content="<%= form_authenticity_token %>">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            primary: { DEFAULT: '#0F172A', dark: '#020617' },
+            secondary: '#F97316',
+            dark: '#0F172A'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #F8FAFC; color: #0F172A; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  
+  <!-- Административный Хедер с темно-синей плашкой -->
+  <header class="bg-slate-900 border-b border-slate-800 text-white shadow-lg shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Логотип -->
+        <div class="flex items-center">
+          <svg class="h-6 w-auto text-secondary mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zm-9-1a2 2 0 0 1 4 0v1-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+          </svg>
+          <span class="font-extrabold text-xl tracking-tight text-white">отели<span class="text-secondary">.админ</span></span>
+        </div>
+
+        <!-- Кнопки управления -->
+        <div class="flex items-center gap-4">
+          <%= link_to root_path, class: "flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 hover:text-white transition-colors" do %>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Вернуться на сайт
+          <% end %>
+          <%= button_to "Выйти", destroy_user_session_path, method: :delete, class: "px-4 py-2 rounded-lg text-sm font-semibold bg-red-600 hover:bg-red-700 text-white transition-colors cursor-pointer", form: { class: "inline", data: { turbo: false } } %>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Рабочая область -->
+  <main class="flex-1 overflow-y-auto max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+    <% flash.each do |key, message| %>
+      <div class="mb-6 p-4 rounded-xl <%= key.to_s == 'notice' ? 'bg-emerald-50 text-emerald-800 border border-emerald-100' : 'bg-rose-50 text-rose-800 border border-rose-100' %> font-medium text-sm">
+        <%= message %>
+      </div>
+    <% end %>
+
+    <%= yield %>
+  </main>
+
+  <!-- Простой футер -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-400 shrink-0">
+    &copy; <%= Time.current.year %> Отели.админ — Панель администрирования и модерации.
+  </footer>
+
+</body>
+</html>

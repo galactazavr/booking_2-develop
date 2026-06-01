@@ -1,0 +1,60 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="mb-6">
+    <%= link_to '← Назад к списку', admin_bookings_path, class: 'text-primary hover:text-primary-dark font-medium text-sm' %>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-dark">Бронирование #<%= @booking.id %></h1>
+        <p class="text-gray-500 text-sm mt-1">Создано: <%= @booking.created_at.strftime('%d.%m.%Y в %H:%M') %></p>
+      </div>
+      <% status_colors = { 'pending' => 'bg-yellow-100 text-yellow-800', 'confirmed' => 'bg-green-100 text-green-800', 'cancelled' => 'bg-red-100 text-red-800', 'completed' => 'bg-blue-100 text-blue-800' } %>
+      <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold <%= status_colors[@booking.status] %>">
+        <%= @booking.status_label %>
+      </span>
+    </div>
+
+    <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Гость</h3>
+        <p class="text-lg font-semibold text-dark"><%= @booking.user.full_name %></p>
+        <p class="text-gray-500"><%= @booking.user.email %></p>
+        <% if @booking.user.phone.present? %>
+          <p class="text-gray-500"><%= @booking.user.phone %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Объект</h3>
+        <p class="text-lg font-semibold text-dark"><%= @booking.room.hotel.name %></p>
+        <p class="text-gray-500"><%= @booking.room.short_info %></p>
+        <p class="text-gray-500"><%= @booking.room.hotel.full_address %></p>
+        <% if @booking.room.hotel.user.present? %>
+          <p class="text-xs text-gray-400 mt-1">Менеджер: <%= @booking.room.hotel.user.full_name %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Даты проживания</h3>
+        <p class="text-dark font-medium">
+          <%= @booking.check_in.strftime('%d.%m.%Y') %> → <%= @booking.check_out.strftime('%d.%m.%Y') %>
+        </p>
+        <p class="text-gray-500"><%= @booking.nights_count %> ночей, <%= @booking.guests_count %> гостей</p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Стоимость</h3>
+        <p class="text-2xl font-bold text-primary"><%= number_to_currency(@booking.total_price, unit: '₽', format: '%n %u', precision: 0) %></p>
+        <p class="text-gray-500"><%= number_to_currency(@booking.price_per_night, unit: '₽', format: '%n %u', precision: 0) %> / ночь</p>
+      </div>
+    </div>
+
+    <% if @booking.special_requests.present? %>
+      <div class="px-8 pb-6">
+        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Особые пожелания</h3>
+        <p class="text-gray-600 bg-gray-50 rounded-xl p-4"><%= @booking.special_requests %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
