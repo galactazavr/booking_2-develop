@@ -1,0 +1,54 @@
+<div class="bg-gray-50 py-16 md:py-24">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl font-extrabold text-dark tracking-tight mb-4">Связаться с нами</h1>
+      <p class="text-lg text-gray-500 max-w-2xl mx-auto">Наша служба поддержки работает круглосуточно, чтобы помочь вам в любой ситуации.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100 text-center">
+        <div class="text-3xl mb-4">📞</div>
+        <h3 class="font-bold text-dark text-lg mb-2">Телефон</h3>
+        <p class="text-gray-500">8 (800) 555-35-35</p>
+        <p class="text-xs text-gray-400 mt-1">Звонок бесплатный по всей России</p>
+      </div>
+
+      <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100 text-center">
+        <div class="text-3xl mb-4">✉️</div>
+        <h3 class="font-bold text-dark text-lg mb-2">Email</h3>
+        <p class="text-gray-500">support@checqin.ru</p>
+        <p class="text-xs text-gray-400 mt-1">Отвечаем в течение 15 минут</p>
+      </div>
+
+      <div class="bg-white p-8 rounded-2xl shadow-card border border-gray-100 text-center">
+        <div class="text-3xl mb-4">🏢</div>
+        <h3 class="font-bold text-dark text-lg mb-2">Офис</h3>
+        <p class="text-gray-500">г. Москва, ул. Тверская, 12</p>
+        <p class="text-xs text-gray-400 mt-1">Пн-Пт с 9:00 до 18:00</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-card border border-gray-100 p-8 md:p-12 max-w-3xl mx-auto">
+      <h3 class="text-2xl font-bold text-dark text-center mb-8">Напишите нам сообщение</h3>
+      <form class="space-y-6" onsubmit="alert('Сообщение отправлено!'); return false;">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <label class="block text-sm font-bold text-dark">Ваше имя</label>
+            <input type="text" placeholder="Иван" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark">
+          </div>
+          <div class="space-y-1">
+            <label class="block text-sm font-bold text-dark">Ваш Email</label>
+            <input type="email" placeholder="ivan@mail.ru" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark">
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-sm font-bold text-dark">Сообщение</label>
+          <textarea rows="4" placeholder="Чем мы можем вам помочь?" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl transition-colors cursor-pointer text-lg">Отправить</button>
+      </form>
+    </div>
+  </div>
+</div>

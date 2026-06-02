@@ -1,0 +1,37 @@
+<div class="text-center mb-8">
+  <h2 class="text-2xl font-bold text-dark">Добро пожаловать</h2>
+  <p class="text-gray-500 mt-2 text-sm">Войдите в свой аккаунт Отели.ру</p>
+</div>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-5" }) do |f| %>
+  
+  <div class="space-y-1">
+    <%= f.label :email, "Электронная почта", class: "block text-sm font-medium text-dark" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-dark placeholder-gray-400", placeholder: "example@mail.com" %>
+  </div>
+
+  <div class="space-y-1">
+    <div class="flex items-center justify-between">
+      <%= f.label :password, "Пароль", class: "block text-sm font-medium text-dark" %>
+    </div>
+    <%= f.password_field :password, autocomplete: "current-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-dark placeholder-gray-400", placeholder: "••••••••" %>
+  </div>
+
+  <% if devise_mapping.rememberable? %>
+    <div class="flex items-center">
+      <%= f.check_box :remember_me, class: "h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" %>
+      <%= f.label :remember_me, "Запомнить меня", class: "ml-2 block text-sm text-gray-600" %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.submit "Войти", class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors cursor-pointer" %>
+  </div>
+<% end %>
+
+<div class="mt-6 text-center">
+  <p class="text-sm text-gray-600">
+    Нет аккаунта? 
+    <%= link_to "Зарегистрируйтесь", new_registration_path(resource_name), class: "font-medium text-primary hover:text-primary-dark transition-colors" %>
+  </p>
+</div>

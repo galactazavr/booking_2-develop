@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Отели.ру — Вход и Регистрация</title>
+  <meta name="csrf-token" content="<%= form_authenticity_token %>">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            primary: { DEFAULT: '#0057FF', dark: '#0043CC', light: '#E6EFFF' },
+            secondary: '#FF5A5F',
+            dark: '#222222'
+          },
+          boxShadow: { 'card': '0 4px 14px rgba(0, 0, 0, 0.08)' }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { color: #222222; background-color: #F7F7F9; -webkit-font-smoothing: antialiased; }
+  </style>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+  <!-- Минималистичная шапка -->
+  <header class="bg-white border-b border-gray-100 py-4 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center">
+      <a href="/" class="flex items-center">
+        <svg class="h-8 w-auto text-primary mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zm-9-1a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+        </svg>
+        <span class="font-bold text-2xl tracking-tight text-primary">Отели<span class="text-secondary">.ру</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Флэш сообщения -->
+  <% flash.each do |key, message| %>
+    <div class="max-w-md mx-auto w-full mt-4 px-4">
+      <div class="p-4 text-sm rounded-lg <%= key.to_s == 'notice' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800' %>">
+        <%= message %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Контент -->
+  <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-card border border-gray-100">
+      <%= yield %>
+    </div>
+  </main>
+
+  <footer class="py-6 text-center text-gray-400 text-sm">
+    &copy; <%= Time.current.year %> Отели.ру. Все права защищены.
+  </footer>
+</body>
+</html>

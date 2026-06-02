@@ -1,0 +1,36 @@
+<div class="bg-gray-50 py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-3xl p-8 md:p-12 shadow-card border border-gray-100">
+      <div class="flex items-center gap-4 mb-8">
+        <div class="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl shrink-0">
+          🛡️
+        </div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-dark tracking-tight">Правила отмены бронирования</h1>
+      </div>
+
+      <div class="prose prose-lg text-gray-600 space-y-6">
+        <p class="leading-relaxed">
+          Мы понимаем, что планы могут меняться. Наша цель — сделать процесс отмены максимально простым и прозрачным для обеих сторон.
+        </p>
+
+        <h3 class="text-xl font-bold text-dark mt-8 mb-2">Бесплатная отмена</h3>
+        <p class="leading-relaxed">
+          Для большинства отелей доступна бесплатная отмена бронирования не позднее чем за 24 часа до времени заезда (14:00 по местному времени отеля). При отмене в этот период вы не несете никаких расходов.
+        </p>
+
+        <h3 class="text-xl font-bold text-dark mt-8 mb-2">Поздняя отмена</h3>
+        <p class="leading-relaxed">
+          В случае отмены бронирования менее чем за 24 часа до заезда или в случае неприбытия (no-show), отель оставляет за собой право удержать стоимость первой ночи в качестве компенсации.
+        </p>
+
+        <div class="bg-primary-light/30 border border-primary-light rounded-2xl p-6 mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div>
+            <h4 class="font-bold text-dark text-lg">Хотите отменить бронирование сейчас?</h4>
+            <p class="text-sm text-gray-500 mt-1">Вы можете сделать это в один клик в вашем личном кабинете.</p>
+          </div>
+          <%= link_to "Мои бронирования", bookings_path, class: "bg-primary hover:bg-primary-dark text-white font-bold px-6 py-3 rounded-xl transition-colors shrink-0" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+<div class="bg-gray-50 py-10 md:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Кнопка назад -->
+    <div class="mb-6">
+      <%= link_to "← Назад к поиску", search_hotels_path, class: "text-primary hover:text-primary-dark font-medium transition-colors" %>
+    </div>
+
+    <!-- Заголовок -->
+    <div class="mb-8">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+          <%= @property.property_type %>
+        </span>
+        <span class="text-gray-400 text-sm">• <%= @property.city %></span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-dark tracking-tight"><%= @property.name %></h1>
+      <p class="text-gray-500 mt-2 flex items-center gap-1.5 text-sm">
+        <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <%= @property.full_address %>
+      </p>
+    </div>
+
+    <!-- Фотогалерея -->
+    <div class="rounded-3xl overflow-hidden shadow-card border border-gray-100 bg-white mb-10 aspect-[2/1] md:aspect-[3/1] relative">
+      <% if @property.photos.attached? && @property.photos.first.present? %>
+        <%= image_tag @property.photos.first, class: "w-full h-full object-cover" %>
+      <% else %>
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80" alt="<%= @property.name %>" class="w-full h-full object-cover">
+      <% end %>
+    </div>
+
+    <!-- Сетка контента -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      
+      <!-- Левая колонка: характеристики и описание -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Характеристики (крупные бейджи) -->
+        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-card grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div class="text-2xl mb-1">🚪</div>
+            <div class="text-sm font-bold text-dark"><%= @property.rooms_count || '1' %> комн.</div>
+            <div class="text-xs text-gray-400 mt-0.5">Комнаты</div>
+          </div>
+          <div>
+            <div class="text-2xl mb-1">📐</div>
+            <div class="text-sm font-bold text-dark"><%= @property.area || '35' %> м²</div>
+            <div class="text-xs text-gray-400 mt-0.5">Площадь</div>
+          </div>
+          <div>
+            <div class="text-2xl mb-1">👥</div>
+            <div class="text-sm font-bold text-dark">до <%= @property.guests_capacity %> чел.</div>
+            <div class="text-xs text-gray-400 mt-0.5">Вместимость</div>
+          </div>
+        </div>
+
+        <!-- Описание -->
+        <div class="bg-white rounded-2xl p-8 border border-gray-100 shadow-card">
+          <h2 class="text-xl font-bold text-dark mb-4">Об объекте недвижимости</h2>
+          <p class="text-gray-600 leading-relaxed whitespace-pre-wrap"><%= @property.description %></p>
+        </div>
+
+        <!-- Удобства -->
+        <div class="bg-white rounded-2xl p-8 border border-gray-100 shadow-card">
+          <h2 class="text-xl font-bold text-dark mb-4">Удобства и особенности</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex items-center gap-3 text-gray-600">
+              <span class="text-xl">📡</span>
+              <span class="font-medium">Высокоскоростной Wi-Fi</span>
+            </div>
+            <div class="flex items-center gap-3 text-gray-600">
+              <span class="text-xl">❄️</span>
+              <span class="font-medium">Кондиционер</span>
+            </div>
+            <div class="flex items-center gap-3 text-gray-600">
+              <span class="text-xl">🧺</span>
+              <span class="font-medium">Стиральная машина</span>
+            </div>
+            <div class="flex items-center gap-3 text-gray-600">
+              <span class="text-xl">🍳</span>
+              <span class="font-medium">Полностью оборудованная кухня</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Правая колонка: Запрос бронирования (виджет) -->
+      <div class="space-y-6 lg:sticky lg:top-24">
+        
+        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-card">
+          <div class="flex items-baseline justify-between mb-6">
+            <span class="text-xs text-gray-400 font-bold uppercase tracking-wider">Цена за ночь</span>
+            <div class="text-3xl font-extrabold text-primary">
+              <%= number_to_currency(@property.display_price, unit: '₽', format: '%n %u', precision: 0) %>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-100 pt-6 mb-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary text-xl font-bold">
+                👤
+              </div>
+              <div>
+                <div class="text-sm font-bold text-dark">Хозяин жилья</div>
+                <div class="text-xs text-gray-400">Частный арендодатель</div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 text-center">
+              <p class="text-sm text-gray-500 mb-2 leading-relaxed">
+                Это частное жилье. Для уточнения свободных дат и бронирования, пожалуйста, свяжитесь с владельцем напрямую по электронной почте:
+              </p>
+              <a href="mailto:<%= @property.user.email %>" class="inline-block bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors mt-2">
+                ✉️ Написать хозяину
+              </a>
+              <div class="text-xs text-gray-400 mt-2 font-mono"><%= @property.user.email %></div>
+            </div>
+          </div>
+
+          <div class="text-center text-xs text-gray-400 leading-relaxed">
+            Бесплатная отмена в течение 48 часов после обращения при согласовании с владельцем.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
