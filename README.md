@@ -59,9 +59,17 @@ bin/rails server
 
 Пароль для всех аккаунтов: `password123`
 
-- Администратор: `admin@checqin.ru` (доступ к `/admin` для модерации)
-- Менеджеры: `manager1@checqin.ru` (Москва), `manager2@checqin.ru` (Петербург), `manager3@checqin.ru` (Сочи)
-- Клиенты: `user1@mail.ru`, `user2@mail.ru`
+- Администратор: `admin@checqin.ru` (модерация объектов в `/admin`)
+- Менеджеры:
+  - `manager1@checqin.ru` (Москва)
+  - `manager2@checqin.ru` (Санкт-Петербург)
+  - `manager3@checqin.ru` (Сочи)
+- Клиенты:
+  - `user1@mail.ru`
+  - `user2@mail.ru`
+  - `user3@mail.ru`
+  - `user4@mail.ru`
+  - `user5@gmail.com`
 
 ## Запуск тестов
 
