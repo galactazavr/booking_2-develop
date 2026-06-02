@@ -19,9 +19,10 @@ class Supervisor::DashboardController < ApplicationController
 
   def create_hotel
     @hotel = current_user.hotels.build(hotel_params)
+    @hotel.status = 'review' # Принудительно отправляем на модерацию
 
     if @hotel.save
-      redirect_to supervisor_success_path(type: 'hotel', id: @hotel.id), notice: 'Отель создан и отправлен на проверку'
+      redirect_to supervisor_success_path(type: 'hotel', id: @hotel.id), notice: 'Отель создан и отправлен на модерацию администратору'
     else
       render :new_hotel, status: :unprocessable_entity
     end
