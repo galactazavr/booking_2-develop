@@ -1,0 +1,80 @@
+<div class="reviews-wrapper">
+  <!-- Заголовок и общий рейтинг -->
+  <div class="flex items-center gap-4 mb-10">
+    <svg class="w-8 h-8 text-dark" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+    <h2 class="text-3xl font-bold text-dark m-0"><%= @hotel.average_rating || 4.8 %> · <%= @hotel.reviews.count %> отзывов</h2>
+  </div>
+
+  <% if @hotel.reviews.any? %>
+    <!-- Сетка отзывов (как у Airbnb) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 mb-12">
+      <% @hotel.reviews.recent.includes(:user).each do |review| %>
+        <div class="review-card">
+          
+          <!-- Инфо автора -->
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold text-lg">
+              <%= review.author_name[0].upcase %>
+            </div>
+            <div>
+              <div class="font-bold text-dark text-lg"><%= review.author_name %></div>
+              <div class="text-gray-500 text-sm"><%= l(review.created_at, format: '%B %Y') %></div>
+            </div>
+          </div>
+          
+          <!-- Оценка -->
+          <div class="flex items-center gap-1 mb-2 text-dark">
+            <span class="font-bold"><%= review.rating %> / 5</span>
+            <span class="text-sm text-gray-500 ml-2">Оценка гостя</span>
+          </div>
+
+          <!-- Текст -->
+          <% if review.body.present? %>
+            <p class="text-gray-700 leading-relaxed text-base"><%= review.body %></p>
+          <% end %>
+
+          <!-- Кнопка удаления (для админов/владельцев) -->
+          <% if policy(review).destroy? %>
+            <div class="mt-4">
+              <%= link_to 'Удалить отзыв', hotel_review_path(@hotel, review), method: :delete, data: { confirm: 'Удалить отзыв?', turbo_confirm: 'Удалить отзыв?' }, class: 'text-sm font-medium text-red-500 hover:text-red-700 underline' %>
+            </div>
+          <% end %>
+
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-white border border-gray-100 rounded-2xl p-8 text-center mb-10 shadow-sm">
+      <p class="text-lg text-gray-500">Пока нет отзывов. Будьте первым!</p>
+    </div>
+  <% end %>
+
+  <!-- Форма добавления отзыва -->
+  <% if user_signed_in? && current_user.user? %>
+    <div class="bg-white border border-gray-200 rounded-2xl p-8 max-w-2xl shadow-sm">
+      <h3 class="text-xl font-bold text-dark mb-6">Оставить свой отзыв</h3>
+      
+      <%= form_with(model: [@hotel, Review.new], local: true, class: "space-y-6") do |f| %>
+        
+        <div class="space-y-2">
+          <%= f.label :rating, 'Ваша оценка', class: "block text-sm font-medium text-dark" %>
+          <%= f.select :rating, (1..5).to_a.reverse, { prompt: 'Выберите оценку (от 1 до 5)' }, class: "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-dark" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= f.label :body, 'Текст отзыва', class: "block text-sm font-medium text-dark" %>
+          <%= f.text_area :body, class: "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-dark placeholder-gray-400", rows: 4, placeholder: 'Расскажите, что вам понравилось...' %>
+        </div>
+
+        <div>
+          <%= f.submit 'Отправить отзыв', class: "bg-dark hover:bg-black text-white font-bold py-3 px-8 rounded-xl transition-colors cursor-pointer" %>
+        </div>
+        
+      <% end %>
+    </div>
+  <% elsif !user_signed_in? %>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm inline-block">
+      <p class="text-gray-600">Чтобы оставить отзыв, пожалуйста, <%= link_to 'войдите в систему', new_user_session_path, class: "text-primary font-medium hover:underline" %>.</p>
+    </div>
+  <% end %>
+</div>
