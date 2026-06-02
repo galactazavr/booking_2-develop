@@ -1,0 +1,14 @@
+<h2>Бронирование #<%= @booking.id %> отменено</h2>
+
+<p>Здравствуйте, <%= @user.full_name %>.</p>
+
+<p>Ваше бронирование в <strong><%= @hotel.name %></strong> было отменено.</p>
+
+<p>
+  <strong>Даты:</strong> <%= @booking.check_in.strftime('%d.%m.%Y') %> — <%= @booking.check_out.strftime('%d.%m.%Y') %><br>
+  <strong>Сумма:</strong> <%= number_to_currency(@booking.total_price, unit: '₽', format: '%n %u') %>
+</p>
+
+<p>Если у вас есть вопросы, свяжитесь с нашей службой поддержки.</p>
+
+<p style="margin-top: 20px; color: #666;">С уважением,<br>Команда CheckIn</p>

@@ -1,0 +1,28 @@
+<h2>Новое бронирование #<%= @booking.id %></h2>
+
+<p>Здравствуйте, <%= @manager.full_name %>!</p>
+
+<p>В ваш объект <strong><%= @hotel.name %></strong> поступило новое бронирование.</p>
+
+<table style="border-collapse: collapse; width: 100%; max-width: 500px;">
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Гость</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;"><%= @booking.user.full_name %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Номер</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee;"><%= @booking.room.short_info %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Даты</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee;"><%= @booking.check_in.strftime('%d.%m.%Y') %> — <%= @booking.check_out.strftime('%d.%m.%Y') %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; color: #666;">Сумма</td>
+    <td style="padding: 8px; font-weight: bold;"><%= number_to_currency(@booking.total_price, unit: '₽', format: '%n %u') %></td>
+  </tr>
+</table>
+
+<p style="margin-top: 16px;">Пожалуйста, подтвердите или отклоните бронирование в панели управления.</p>
+
+<p style="margin-top: 20px; color: #666;">С уважением,<br>Система CheckIn</p>

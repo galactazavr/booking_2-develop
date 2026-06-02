@@ -1,0 +1,34 @@
+<h2>Бронирование #<%= @booking.id %> создано</h2>
+
+<p>Здравствуйте, <%= @user.full_name %>!</p>
+
+<p>Ваше бронирование успешно создано и ожидает подтверждения.</p>
+
+<table style="border-collapse: collapse; width: 100%; max-width: 500px;">
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Отель</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;"><%= @hotel.name %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Номер</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee;"><%= @room.short_info %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Заезд</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee;"><%= @booking.check_in.strftime('%d.%m.%Y') %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Выезд</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee;"><%= @booking.check_out.strftime('%d.%m.%Y') %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Гостей</td>
+    <td style="padding: 8px; border-bottom: 1px solid #eee;"><%= @booking.guests_count %></td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; color: #666;">Итого</td>
+    <td style="padding: 8px; font-weight: bold; color: #0057FF;"><%= number_to_currency(@booking.total_price, unit: '₽', format: '%n %u') %></td>
+  </tr>
+</table>
+
+<p style="margin-top: 20px; color: #666;">С уважением,<br>Команда CheckIn</p>
