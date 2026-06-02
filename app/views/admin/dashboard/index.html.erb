@@ -1,37 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Админ Панель — Отели.ру</title>
-  <meta name="csrf-token" content="<%= form_authenticity_token %>">
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: { fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: { primary: '#0057FF', dark: '#111827' } }
-      }
-    }
-  </script>
-
-# </head>
-# <body class="bg-gray-50 min-h-screen text-gray-900">
-#   <header class="bg-dark text-white shadow-md">
-#     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-#       <div class="font-bold text-xl tracking-tight text-white flex items-center">
-#         <span class="text-primary mr-1">⚡</span> Отели.Админ
-#       </div>
-#       <div class="flex gap-4 items-center text-sm">
-#         <a href="/" class="text-gray-300 hover:text-white">На сайт</a>
-#         <%= button_to "Выйти", destroy_user_session_path, method: :delete, class: "bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg font-medium", form: { data: { turbo: false } } %>
-#       </div>
-#     </div>
-#   </header>
-
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<div>
     
     <% flash.each do |key, message| %>
       <div class="mb-6 p-4 rounded-lg bg-green-50 text-green-800 border border-green-100">
@@ -64,14 +31,65 @@
               <% @hotels.each do |hotel| %>
                 <tr class="hover:bg-gray-50 transition-colors">
                   <td class="p-4">
-                    <div class="font-bold text-dark"><%= hotel.name %></div>
-                    <div class="text-xs text-gray-400">#<%= hotel.id %></div>
+                    <div class="font-bold text-dark cursor-pointer" onclick="document.getElementById('hotel-details-<%= hotel.id %>').classList.toggle('hidden')">
+                      <%= hotel.name %>
+                      <span class="text-xs text-blue-500 ml-1">▼ подробнее</span>
+                    </div>
+                    <div class="text-xs text-gray-400">#<%= hotel.id %> · <%= hotel.hotel_type %></div>
                   </td>
                   <td class="p-4 text-sm text-gray-600"><%= hotel.city %></td>
                   <td class="p-4 text-sm text-gray-600"><%= hotel.user&.email || 'Неизвестно' %></td>
                   <td class="p-4 flex gap-2">
                     <%= button_to "Одобрить", admin_approve_hotel_path(hotel), method: :patch, class: "bg-green-100 text-green-700 hover:bg-green-200 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors" %>
                     <%= button_to "Отклонить", admin_reject_hotel_path(hotel), method: :patch, class: "bg-red-100 text-red-700 hover:bg-red-200 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors", data: { confirm: "Точно отклонить?" } %>
+                  </td>
+                </tr>
+                <tr id="hotel-details-<%= hotel.id %>" class="hidden">
+                  <td colspan="4" class="px-4 pb-4">
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 text-sm space-y-2">
+                      <div class="grid grid-cols-2 gap-4">
+                        <div>
+                          <span class="font-semibold text-gray-700">Адрес:</span>
+                          <span class="text-gray-600"><%= hotel.full_address %></span>
+                        </div>
+                        <div>
+                          <span class="font-semibold text-gray-700">Тип:</span>
+                          <span class="text-gray-600"><%= hotel.hotel_type %></span>
+                        </div>
+                        <div>
+                          <span class="font-semibold text-gray-700">Цена от:</span>
+                          <span class="text-gray-600"><%= number_to_currency(hotel.base_price_per_night, unit: '₽', format: '%n %u') %> / ночь</span>
+                        </div>
+                        <div>
+                          <span class="font-semibold text-gray-700">Рейтинг:</span>
+                          <span class="text-gray-600"><%= hotel.average_rating %> ⭐</span>
+                        </div>
+                        <div>
+                          <span class="font-semibold text-gray-700">Доступность:</span>
+                          <span class="text-gray-600"><%= hotel.availability_label %></span>
+                        </div>
+                        <div>
+                          <span class="font-semibold text-gray-700">Сеть:</span>
+                          <span class="text-gray-600"><%= hotel.chain.present? ? hotel.chain : '—' %></span>
+                        </div>
+                      </div>
+                      <% if hotel.description.present? %>
+                        <div class="pt-2 border-t border-slate-200">
+                          <span class="font-semibold text-gray-700">Описание:</span>
+                          <p class="text-gray-600 mt-1"><%= hotel.description %></p>
+                        </div>
+                      <% end %>
+                      <% if hotel.rooms.any? %>
+                        <div class="pt-2 border-t border-slate-200">
+                          <span class="font-semibold text-gray-700">Номера (<%= hotel.rooms.count %>):</span>
+                          <ul class="mt-1 space-y-1">
+                            <% hotel.rooms.each do |room| %>
+                              <li class="text-gray-600">• <%= room.name %> — <%= room.room_type %>, <%= room.capacity %> гост., <%= number_to_currency(room.price_per_night, unit: '₽', format: '%n %u') %></li>
+                            <% end %>
+                          </ul>
+                        </div>
+                      <% end %>
+                    </div>
                   </td>
                 </tr>
               <% end %>
@@ -128,6 +146,5 @@
         </table>
       </div>
     </div>
-  </main>
-</body>
-</html>
+  </div>
+</div>
