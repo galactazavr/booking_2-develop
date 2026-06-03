@@ -76,3 +76,6 @@ docker-compose.yml
 # Local development
 *.local
 !.gitkeep
+
+# RSpec example tracking
+spec/examples.txt
