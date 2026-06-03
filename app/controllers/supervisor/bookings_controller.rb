@@ -3,7 +3,7 @@
 class Supervisor::BookingsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_supervisor!
-  before_action :set_booking, only: [:show, :confirm]
+  before_action :set_booking, only: [:show, :confirm, :cancel]
 
   layout 'supervisor'
 
@@ -25,9 +25,17 @@ class Supervisor::BookingsController < ApplicationController
 
   def confirm
     if @booking.confirm!
-      redirect_to supervisor_booking_path(@booking), notice: 'Бронирование подтверждено.'
+      redirect_back fallback_location: supervisor_booking_path(@booking), notice: 'Бронирование подтверждено.'
     else
-      redirect_to supervisor_booking_path(@booking), alert: 'Невозможно подтвердить это бронирование.'
+      redirect_back fallback_location: supervisor_booking_path(@booking), alert: 'Невозможно подтвердить это бронирование.'
+    end
+  end
+
+  def cancel
+    if @booking.cancel!
+      redirect_back fallback_location: supervisor_booking_path(@booking), notice: 'Бронирование отменено.'
+    else
+      redirect_back fallback_location: supervisor_booking_path(@booking), alert: 'Невозможно отменить это бронирование.'
     end
   end
 

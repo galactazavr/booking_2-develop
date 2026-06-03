@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     resources :bookings, only: [:index, :show] do
       member do
         patch :confirm
+        patch :cancel
       end
     end
   end
