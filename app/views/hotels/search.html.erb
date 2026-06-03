@@ -13,7 +13,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <%= text_field_tag :city, params[:city], placeholder: "Куда едем?", class: "w-full border-none p-0 text-sm focus:ring-0 bg-transparent text-dark font-medium" %>
+        <%= select_tag :city, options_for_select([["Все города", ""]] + all_db_cities.map { |c| [c, c] }, params[:city]), class: "w-full border-none p-0 text-sm focus:ring-0 bg-transparent text-dark font-medium cursor-pointer" %>
       </div>
 
       <!-- Даты и Гости (на мобильных скрыты для экономии места) -->

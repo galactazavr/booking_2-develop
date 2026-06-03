@@ -22,7 +22,7 @@
         <!-- Локация -->
         <div class="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-gray-100 relative group">
           <label for="city" class="block text-xs font-bold tracking-wider text-dark uppercase mb-1">Куда</label>
-          <%= text_field_tag :city, params[:city], placeholder: "Город или отель", class: "w-full border-none p-0 text-dark placeholder-gray-400 focus:ring-0 text-base font-medium", id: "city" %>
+          <%= select_tag :city, options_for_select([["Все города", ""]] + all_db_cities.map { |c| [c, c] }, params[:city]), class: "w-full border-none p-0 text-dark focus:ring-0 text-base font-medium bg-transparent cursor-pointer", id: "city" %>
         </div>
 
         <!-- Заезд -->
