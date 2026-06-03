@@ -12,14 +12,14 @@
       <!-- Табы -->
       <div class="mb-8 border-b border-gray-200">
         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-          <a href="#" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Предстоящие</a>
-          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">Прошедшие и отмененные</a>
+          <button id="tab-upcoming" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none cursor-pointer">Предстоящие</button>
+          <button id="tab-past" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors focus:outline-none cursor-pointer">Прошедшие и отмененные</button>
         </nav>
       </div>
 
       <div class="space-y-12">
         <!-- Предстоящие -->
-        <div>
+        <div id="section-upcoming">
           <% upcoming = @bookings.select { |b| b.check_in >= Date.today && !b.cancelled? } %>
           <% if upcoming.any? %>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Прошедшие -->
-        <div>
+        <div id="section-past" class="hidden">
           <h3 class="text-xl font-bold text-dark mb-6">Прошедшие и отмененные</h3>
           <% past = @bookings.reject { |b| b.check_in >= Date.today && !b.cancelled? } %>
           <% if past.any? %>
@@ -72,3 +72,45 @@
 
   </div>
 </div>
+
+<script>
+  (function() {
+    function initTabs() {
+      const tabUpcoming = document.getElementById("tab-upcoming");
+      const tabPast = document.getElementById("tab-past");
+      const sectionUpcoming = document.getElementById("section-upcoming");
+      const sectionPast = document.getElementById("section-past");
+
+      if (tabUpcoming && tabPast) {
+        tabUpcoming.onclick = function() {
+          if (sectionUpcoming) sectionUpcoming.classList.remove("hidden");
+          if (sectionPast) sectionPast.classList.add("hidden");
+
+          tabUpcoming.classList.remove("border-transparent", "text-gray-500");
+          tabUpcoming.classList.add("border-primary", "text-primary");
+
+          tabPast.classList.remove("border-primary", "text-primary");
+          tabPast.classList.add("border-transparent", "text-gray-500");
+        };
+
+        tabPast.onclick = function() {
+          if (sectionUpcoming) sectionUpcoming.classList.add("hidden");
+          if (sectionPast) sectionPast.classList.remove("hidden");
+
+          tabPast.classList.remove("border-transparent", "text-gray-500");
+          tabPast.classList.add("border-primary", "text-primary");
+
+          tabUpcoming.classList.remove("border-primary", "text-primary");
+          tabUpcoming.classList.add("border-transparent", "text-gray-500");
+        };
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initTabs);
+    } else {
+      initTabs();
+    }
+    document.addEventListener("turbo:load", initTabs);
+  })();
+</script>

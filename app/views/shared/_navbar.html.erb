@@ -40,10 +40,14 @@
             
             <!-- Выпадающее меню (появляется при наведении) -->
             <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 border border-gray-100 hidden group-hover:block before:content-[''] before:absolute before:-top-2 before:left-0 before:w-full before:h-2">
-              <% if current_user.supervisor? %>
-                <a href="/supervisor" class="block px-4 py-2 text-sm text-dark hover:bg-gray-50">Супервайзор</a>
+              <% if current_user.admin? %>
+                <a href="/admin" class="block px-4 py-2 text-sm font-bold text-primary hover:bg-gray-50">Админ-панель</a>
+              <% else %>
+                <% if current_user.supervisor? %>
+                  <a href="/supervisor" class="block px-4 py-2 text-sm text-dark hover:bg-gray-50">Супервайзор</a>
+                <% end %>
+                <a href="/bookings" class="block px-4 py-2 text-sm text-dark hover:bg-gray-50">Мои бронирования</a>
               <% end %>
-              <a href="/bookings" class="block px-4 py-2 text-sm text-dark hover:bg-gray-50">Мои бронирования</a>
               <div class="border-t border-gray-100 my-1"></div>
               <%= button_to "Выйти", destroy_user_session_path, method: :delete, class: "block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50", form: { data: { turbo: false } } %>
             </div>
