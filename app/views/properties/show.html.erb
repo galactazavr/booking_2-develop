@@ -115,7 +115,7 @@
               <p class="text-sm text-gray-500 mb-2 leading-relaxed">
                 Это частное жилье. Для уточнения свободных дат и бронирования, пожалуйста, свяжитесь с владельцем напрямую по электронной почте:
               </p>
-              <a href="mailto:<%= @property.user.email %>" class="inline-block bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors mt-2">
+              <a href="mailto:<%= @property.user.email %>" data-turbo="false" onclick="copyEmailToClipboard(event, '<%= @property.user.email %>')" id="write-host-btn" class="inline-block bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors mt-2">
                 ✉️ Написать хозяину
               </a>
               <div class="text-xs text-gray-400 mt-2 font-mono"><%= @property.user.email %></div>
@@ -133,3 +133,25 @@
 
   </div>
 </div>
+
+<script>
+  function copyEmailToClipboard(event, email) {
+    navigator.clipboard.writeText(email).then(function() {
+      const btn = document.getElementById('write-host-btn');
+      if (!btn) return;
+      
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '📋 Почта скопирована!';
+      btn.classList.remove('bg-primary', 'hover:bg-primary-dark');
+      btn.classList.add('bg-green-600', 'hover:bg-green-700');
+      
+      setTimeout(function() {
+        btn.innerHTML = originalText;
+        btn.classList.add('bg-primary', 'hover:bg-primary-dark');
+        btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+      }, 2000);
+    }).catch(function(err) {
+      console.error('Failed to copy email: ', err);
+    });
+  }
+</script>
