@@ -9,6 +9,8 @@ class Admin::DashboardController < ApplicationController
   def index
     @hotels = Hotel.review.includes(:user).order(created_at: :desc)
     @properties = Property.review.includes(:user).order(created_at: :desc)
+    @history_hotels = Hotel.where(status: ['active', 'rejected']).includes(:user).order(updated_at: :desc).limit(10)
+    @history_properties = Property.where(status: ['active', 'rejected']).includes(:user).order(updated_at: :desc).limit(10)
   end
 
   def approve_hotel

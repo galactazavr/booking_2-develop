@@ -1,10 +1,5 @@
 <div>
     
-    <% flash.each do |key, message| %>
-      <div class="mb-6 p-4 rounded-lg bg-green-50 text-green-800 border border-green-100">
-        <%= message %>
-      </div>
-    <% end %>
 
     <div class="mb-10">
       <h1 class="text-3xl font-bold text-dark">Модерация объектов</h1>
@@ -144,6 +139,102 @@
             <% end %>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- История действий -->
+    <div class="mt-16 border-t border-gray-100 pt-10">
+      <h2 class="text-2xl font-bold text-dark mb-2 flex items-center gap-2">
+        ⏳ История действий
+      </h2>
+      <p class="text-gray-500 text-sm mb-6">Последние одобренные или отклоненные объекты (до 10 записей)</p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- История Отелей -->
+        <div>
+          <h3 class="text-lg font-bold text-dark mb-4 flex items-center gap-2">🏨 Отели</h3>
+          <div class="bg-white shadow-sm rounded-2xl border border-gray-100 overflow-hidden">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                  <th class="p-4 font-bold tracking-wider">Объект</th>
+                  <th class="p-4 font-bold tracking-wider">Статус</th>
+                  <th class="p-4 font-bold tracking-wider">Дата решения</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <% if @history_hotels.any? %>
+                  <% @history_hotels.each do |hotel| %>
+                    <tr class="hover:bg-gray-50/50 transition-colors">
+                      <td class="p-4">
+                        <div class="font-bold text-dark"><%= hotel.name %></div>
+                        <div class="text-xs text-gray-400">#<%= hotel.id %> · <%= hotel.city %></div>
+                      </td>
+                      <td class="p-4">
+                        <% if hotel.status == 'active' %>
+                          <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-green-50 text-green-700 border border-green-100">Одобрен</span>
+                        <% else %>
+                          <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-red-50 text-red-700 border border-red-100">Отклонен</span>
+                        <% end %>
+                      </td>
+                      <td class="p-4 text-xs text-gray-500 font-mono">
+                        <%= l(hotel.updated_at, format: '%d.%m.%Y %H:%M') %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="3" class="p-6 text-center text-gray-400 text-xs">История пуста</td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- История Апартаментов -->
+        <div>
+          <h3 class="text-lg font-bold text-dark mb-4 flex items-center gap-2">🏠 Апартаменты и Жилье</h3>
+          <div class="bg-white shadow-sm rounded-2xl border border-gray-100 overflow-hidden">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-xs">
+                  <th class="p-4 font-bold tracking-wider">Объект</th>
+                  <th class="p-4 font-bold tracking-wider">Статус</th>
+                  <th class="p-4 font-bold tracking-wider">Дата решения</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <% if @history_properties.any? %>
+                  <% @history_properties.each do |property| %>
+                    <tr class="hover:bg-gray-50/50 transition-colors">
+                      <td class="p-4">
+                        <div class="font-bold text-dark"><%= property.name %></div>
+                        <div class="text-xs text-gray-400">#<%= property.id %> · <%= property.city %></div>
+                      </td>
+                      <td class="p-4">
+                        <% if property.status == 'active' %>
+                          <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-green-50 text-green-700 border border-green-100">Одобрен</span>
+                        <% else %>
+                          <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-red-50 text-red-700 border border-red-100">Отклонен</span>
+                        <% end %>
+                      </td>
+                      <td class="p-4 text-xs text-gray-500 font-mono">
+                        <%= l(property.updated_at, format: '%d.%m.%Y %H:%M') %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="3" class="p-6 text-center text-gray-400 text-xs">История пуста</td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
