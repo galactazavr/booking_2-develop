@@ -2,7 +2,7 @@
 
 class Property < ApplicationRecord
   # == Enums ==
-  enum :status, { review: 'review', active: 'active', rejected: 'rejected' }, default: 'review'
+  enum :status, { review: 'review', active: 'active', rejected: 'rejected', deleted: 'deleted' }, default: 'review'
 
   # == Associations ==
   belongs_to :user

@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :favorite_hotels, through: :favorites, source: :hotel
   has_many :bookings, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   # == Validations ==
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

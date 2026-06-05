@@ -14,6 +14,7 @@ class Booking < ApplicationRecord
   belongs_to :room
   has_one :hotel, through: :room
   has_one :review, dependent: :nullify
+  has_many :notifications, dependent: :destroy
 
   # == Callbacks ==
   before_validation :calculate_total_price, on: :create
@@ -100,6 +101,7 @@ class Booking < ApplicationRecord
 
   def dates_not_in_past
     return if check_in.blank?
+    return if completed?
 
     if check_in < Date.today
       errors.add(:check_in, 'не может быть в прошлом')
@@ -139,6 +141,14 @@ class Booking < ApplicationRecord
       BookingNotificationJob.perform_later(id, 'confirmed')
     when 'cancelled'
       BookingNotificationJob.perform_later(id, 'cancelled')
+    end
+  end
+
+  def self.update_completed_bookings!
+    where(status: 'confirmed').where('check_out < ?', Date.today).find_each do |booking|
+      if booking.update(status: 'completed')
+        BookingNotificationJob.perform_later(booking.id, 'completed')
+      end
     end
   end
 end

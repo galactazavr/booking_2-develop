@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_06_02_080000) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_11_000201) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "plpgsql"
@@ -61,7 +61,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_02_080000) do
     t.index ["user_id"], name: "index_bookings_on_user_id"
     t.check_constraint "check_out > check_in", name: "chk_bookings_checkout_after_checkin"
     t.check_constraint "guests_count > 0", name: "chk_bookings_guests_count_positive"
-    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'confirmed'::character varying, 'cancelled'::character varying, 'completed'::character varying]::text[])", name: "chk_bookings_status_values"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying::text, 'confirmed'::character varying::text, 'cancelled'::character varying::text, 'completed'::character varying::text])", name: "chk_bookings_status_values"
     t.check_constraint "total_price > 0::numeric", name: "chk_bookings_total_price_positive"
     t.exclusion_constraint "room_id WITH =, daterange(check_in, check_out) WITH &&", where: "(status)::text <> 'cancelled'::text", using: :gist, name: "excl_bookings_no_overlap"
   end
@@ -93,9 +93,27 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_02_080000) do
     t.decimal "base_price_per_night"
     t.date "available_from"
     t.date "available_to"
+    t.string "check_in_time", default: "14:00"
+    t.string "check_out_time", default: "12:00"
+    t.text "amenities", default: [], array: true
+    t.text "rules"
+    t.string "image_url"
+    t.text "deletion_reason"
     t.index ["status"], name: "index_hotels_on_status"
     t.index ["user_id"], name: "index_hotels_on_user_id"
-    t.check_constraint "status::text = ANY (ARRAY['review'::character varying, 'active'::character varying, 'rejected'::character varying]::text[])", name: "chk_hotels_status_values"
+    t.check_constraint "status::text = ANY (ARRAY['review'::text, 'active'::text, 'rejected'::text, 'deleted'::text])", name: "chk_hotels_status_values"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.text "message", null: false
+    t.boolean "read", default: false, null: false
+    t.bigint "booking_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_notifications_on_booking_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "properties", force: :cascade do |t|
@@ -114,9 +132,15 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_02_080000) do
     t.decimal "base_price_per_night"
     t.date "available_from"
     t.date "available_to"
+    t.string "check_in_time", default: "14:00"
+    t.string "check_out_time", default: "12:00"
+    t.text "amenities", default: [], array: true
+    t.text "rules"
+    t.string "image_url"
+    t.text "deletion_reason"
     t.index ["status"], name: "index_properties_on_status"
     t.index ["user_id"], name: "index_properties_on_user_id"
-    t.check_constraint "status::text = ANY (ARRAY['review'::character varying, 'active'::character varying, 'rejected'::character varying]::text[])", name: "chk_properties_status_values"
+    t.check_constraint "status::text = ANY (ARRAY['review'::text, 'active'::text, 'rejected'::text, 'deleted'::text])", name: "chk_properties_status_values"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -145,6 +169,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_02_080000) do
     t.bigint "hotel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "view_type", default: "Во двор"
+    t.text "amenities", default: [], array: true
+    t.string "image_url"
     t.index ["hotel_id"], name: "index_rooms_on_hotel_id"
   end
 
@@ -164,7 +191,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_02_080000) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
-    t.check_constraint "role::text = ANY (ARRAY['user'::character varying, 'supervisor'::character varying, 'admin'::character varying]::text[])", name: "chk_users_role_values"
+    t.check_constraint "role::text = ANY (ARRAY['user'::character varying::text, 'supervisor'::character varying::text, 'admin'::character varying::text])", name: "chk_users_role_values"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -174,6 +201,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_02_080000) do
   add_foreign_key "favorites", "hotels"
   add_foreign_key "favorites", "users"
   add_foreign_key "hotels", "users"
+  add_foreign_key "notifications", "bookings"
+  add_foreign_key "notifications", "users"
   add_foreign_key "properties", "users"
   add_foreign_key "reviews", "bookings"
   add_foreign_key "reviews", "hotels"
