@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HotelsController < ApplicationController
-  before_action :set_hotel, only: [:show]
+  before_action :set_hotel, only: [:show, :destroy]
 
   def index
     @hotels = Hotel.active
@@ -51,7 +51,7 @@ class HotelsController < ApplicationController
       @results = @results.order(base_price_per_night: :asc)
     end
 
-    @results = @results.page(params[:page]).per(20)
+    @results = @results.page(params[:page]).per(12)
 
     # Сохраняем в @hotels для совместимости со вьюхами
     @hotels = @results
@@ -61,6 +61,30 @@ class HotelsController < ApplicationController
 
   def show
     @rooms = @hotel.rooms.available.order(:price_per_night)
+  end
+
+  def destroy
+    reason = params[:deletion_reason].presence || "Отель закрылся или был снесён"
+
+    # Notify users about booking cancellations due to hotel deletion
+    active_bookings = Booking.joins(:room).where(rooms: { hotel_id: @hotel.id }, status: ['pending', 'confirmed'])
+    active_bookings.each do |booking|
+      Notification.create!(
+        user: booking.user,
+        title: "Бронирование отменено",
+        body: "Ваше бронирование №#{booking.id} в отеле \"#{@hotel.name}\" было отменено. Причина: #{reason}",
+        notification_type: 'booking_cancelled'
+      )
+
+      begin
+        BookingMailer.booking_notification(booking, "Ваше бронирование отменено, так как отель был удален по причине: #{reason}").deliver_later
+      rescue => e
+        logger.error "Failed to send cancellation email for booking #{booking.id}: #{e.message}"
+      end
+    end
+
+    @hotel.update!(status: 'deleted', deletion_reason: reason)
+    redirect_to request.referer || root_path, notice: "Отель \"#{@hotel.name}\" успешно удалён. Активные бронирования отменены."
   end
 
   private

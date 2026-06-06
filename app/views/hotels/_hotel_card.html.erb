@@ -6,6 +6,8 @@
   <div class="relative w-full aspect-[4/3] bg-gray-100 overflow-hidden">
     <% if hotel.photos.attached? && hotel.photos.first.present? %>
       <%= image_tag hotel.photos.first, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", alt: hotel.name %>
+    <% elsif hotel.respond_to?(:image_url) && hotel.image_url.present? %>
+      <img src="<%= hotel.image_url %>" alt="<%= hotel.name %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
     <% else %>
       <!-- Премиум-заглушка с красивым дефолтным фото -->
       <% default_image_url = hotel.is_a?(Property) ? "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" : "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" %>
