@@ -21,7 +21,12 @@ RSpec.describe Review, type: :model do
     describe 'uniqueness per user and booking' do
       let(:user) { create(:user) }
       let(:hotel) { create(:hotel) }
-      let(:booking) { create(:booking, user: user) }
+      let(:room) { create(:room, hotel: hotel) }
+      let(:booking) do
+        b = build(:booking, user: user, room: room, status: 'completed', check_in: 5.days.ago, check_out: 2.days.ago)
+        b.save!(validate: false)
+        b
+      end
 
       it 'prevents duplicate reviews for the same booking' do
         create(:review, user: user, hotel: hotel, booking: booking)

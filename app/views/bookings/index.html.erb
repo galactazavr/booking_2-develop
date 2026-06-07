@@ -12,15 +12,16 @@
       <!-- Табы -->
       <div class="mb-8 border-b border-gray-200">
         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-          <button id="tab-upcoming" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none cursor-pointer">Предстоящие</button>
-          <button id="tab-past" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors focus:outline-none cursor-pointer">Прошедшие и отмененные</button>
+          <button id="tab-upcoming" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-bold text-sm focus:outline-none cursor-pointer">Активные и будущие</button>
+          <button id="tab-past" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-bold text-sm transition-colors focus:outline-none cursor-pointer">Завершенные и прошедшие</button>
+          <button id="tab-cancelled" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-bold text-sm transition-colors focus:outline-none cursor-pointer">Отмененные</button>
         </nav>
       </div>
 
-      <div class="space-y-12">
-        <!-- Предстоящие -->
+      <div class="space-y-6">
+        <!-- Активные и будущие -->
         <div id="section-upcoming">
-          <% upcoming = @bookings.select { |b| b.check_in >= Date.today && !b.cancelled? } %>
+          <% upcoming = @bookings.select { |b| %w[pending confirmed].include?(b.status) } %>
           <% if upcoming.any? %>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <% upcoming.each do |booking| %>
@@ -29,24 +30,39 @@
             </div>
           <% else %>
             <div class="bg-white border border-gray-100 rounded-2xl p-8 text-center shadow-sm">
-              <p class="text-gray-500">Нет предстоящих поездок.</p>
+              <p class="text-gray-500">Нет активных или предстоящих поездок.</p>
             </div>
           <% end %>
         </div>
 
-        <!-- Прошедшие -->
+        <!-- Завершенные и прошедшие -->
         <div id="section-past" class="hidden">
-          <h3 class="text-xl font-bold text-dark mb-6">Прошедшие и отмененные</h3>
-          <% past = @bookings.reject { |b| b.check_in >= Date.today && !b.cancelled? } %>
+          <% past = @bookings.select { |b| b.status == 'completed' } %>
           <% if past.any? %>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 opacity-75">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <% past.each do |booking| %>
                 <%= render partial: 'bookings/booking_card', locals: { booking: booking } %>
               <% end %>
             </div>
           <% else %>
             <div class="bg-white border border-gray-100 rounded-2xl p-8 text-center shadow-sm">
-              <p class="text-gray-500">Нет прошедших поездок.</p>
+              <p class="text-gray-500">Нет завершенных поездок.</p>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Отмененные -->
+        <div id="section-cancelled" class="hidden">
+          <% cancelled = @bookings.select { |b| b.status == 'cancelled' } %>
+          <% if cancelled.any? %>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 opacity-75">
+              <% cancelled.each do |booking| %>
+                <%= render partial: 'bookings/booking_card', locals: { booking: booking } %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="bg-white border border-gray-100 rounded-2xl p-8 text-center shadow-sm">
+              <p class="text-gray-500">Нет отмененных поездок.</p>
             </div>
           <% end %>
         </div>
@@ -78,31 +94,45 @@
     function initTabs() {
       const tabUpcoming = document.getElementById("tab-upcoming");
       const tabPast = document.getElementById("tab-past");
+      const tabCancelled = document.getElementById("tab-cancelled");
+      
       const sectionUpcoming = document.getElementById("section-upcoming");
       const sectionPast = document.getElementById("section-past");
+      const sectionCancelled = document.getElementById("section-cancelled");
 
-      if (tabUpcoming && tabPast) {
-        tabUpcoming.onclick = function() {
-          if (sectionUpcoming) sectionUpcoming.classList.remove("hidden");
-          if (sectionPast) sectionPast.classList.add("hidden");
+      const tabs = [tabUpcoming, tabPast, tabCancelled];
+      const sections = [sectionUpcoming, sectionPast, sectionCancelled];
 
-          tabUpcoming.classList.remove("border-transparent", "text-gray-500");
-          tabUpcoming.classList.add("border-primary", "text-primary");
+      function activateTab(index) {
+        tabs.forEach((tab, i) => {
+          if (!tab) return;
+          if (i === index) {
+            tab.classList.remove("border-transparent", "text-gray-500");
+            tab.classList.add("border-primary", "text-primary");
+          } else {
+            tab.classList.remove("border-primary", "text-primary");
+            tab.classList.add("border-transparent", "text-gray-500");
+          }
+        });
 
-          tabPast.classList.remove("border-primary", "text-primary");
-          tabPast.classList.add("border-transparent", "text-gray-500");
-        };
+        sections.forEach((sec, i) => {
+          if (!sec) return;
+          if (i === index) {
+            sec.classList.remove("hidden");
+          } else {
+            sec.classList.add("hidden");
+          }
+        });
+      }
 
-        tabPast.onclick = function() {
-          if (sectionUpcoming) sectionUpcoming.classList.add("hidden");
-          if (sectionPast) sectionPast.classList.remove("hidden");
-
-          tabPast.classList.remove("border-transparent", "text-gray-500");
-          tabPast.classList.add("border-primary", "text-primary");
-
-          tabUpcoming.classList.remove("border-primary", "text-primary");
-          tabUpcoming.classList.add("border-transparent", "text-gray-500");
-        };
+      if (tabUpcoming) {
+        tabUpcoming.onclick = () => activateTab(0);
+      }
+      if (tabPast) {
+        tabPast.onclick = () => activateTab(1);
+      }
+      if (tabCancelled) {
+        tabCancelled.onclick = () => activateTab(2);
       }
     }
 

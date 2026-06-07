@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe 'Reviews', type: :request do
   let(:user) { create(:user) }
   let(:hotel) { create(:hotel, :active) }
+  let(:room) { create(:room, hotel: hotel) }
+  let!(:booking) { create(:booking, user: user, room: room, status: 'completed', check_in: 5.days.ago, check_out: 2.days.ago) }
 
   describe 'POST /hotels/:hotel_id/reviews' do
     context 'as guest' do

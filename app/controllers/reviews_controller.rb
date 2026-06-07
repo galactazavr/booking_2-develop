@@ -9,6 +9,19 @@ class ReviewsController < ApplicationController
     @review.user = current_user
     authorize @review
 
+    # Find a completed booking for this user in this hotel
+    completed_booking = current_user.bookings.joins(:room)
+                                     .where(rooms: { hotel_id: @hotel.id }, status: 'completed')
+                                     .order(check_out: :desc)
+                                     .first
+
+    if completed_booking
+      @review.booking = completed_booking
+    else
+      redirect_to hotel_path(@hotel), alert: 'Вы можете оставить отзыв только после завершения проживания в этом отеле.'
+      return
+    end
+
     if @review.save
       redirect_to hotel_path(@hotel), notice: 'Отзыв успешно добавлен!'
     else

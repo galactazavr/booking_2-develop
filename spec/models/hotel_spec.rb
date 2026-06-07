@@ -67,7 +67,7 @@ RSpec.describe Hotel, type: :model do
 
   # == Enums ==
   describe 'enums' do
-    it { is_expected.to define_enum_for(:status).with_values(review: 'review', active: 'active', rejected: 'rejected').backed_by_column_of_type(:string) }
+    it { is_expected.to define_enum_for(:status).with_values(review: 'review', active: 'active', rejected: 'rejected', deleted: 'deleted').backed_by_column_of_type(:string) }
   end
 
   # == Scopes ==
