@@ -4,6 +4,49 @@
     <p class="text-gray-500 mt-1">Панель администратора — полный список бронирований системы</p>
   </div>
 
+  <!-- Панель фильтров -->
+  <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm mb-8">
+    <%= form_with url: admin_bookings_path, method: :get, local: true, class: "grid grid-cols-1 md:grid-cols-12 gap-4 items-end" do |f| %>
+      <!-- Поиск по ключевому слову -->
+      <div class="md:col-span-4 space-y-1">
+        <%= f.label :query, 'Поиск гостя или отеля', class: "block text-xs font-bold text-gray-400 uppercase" %>
+        <%= f.text_field :query, value: params[:query], placeholder: "ФИО, email или название отеля...", class: "w-full px-4 py-2.5 border border-gray-200 rounded-xl text-dark text-sm focus:ring-2 focus:ring-primary focus:border-primary" %>
+      </div>
+
+      <!-- Фильтр по статусу -->
+      <div class="md:col-span-2 space-y-1">
+        <%= f.label :status, 'Статус', class: "block text-xs font-bold text-gray-400 uppercase" %>
+        <%= f.select :status, 
+            options_for_select([
+              ['Все статусы', ''],
+              ['Ожидает', 'pending'],
+              ['Подтверждено', 'confirmed'],
+              ['Отменено', 'cancelled'],
+              ['Завершено', 'completed']
+            ], params[:status]), {},
+            { class: "w-full px-4 py-2.5 border border-gray-200 rounded-xl text-dark text-sm bg-white focus:ring-2 focus:ring-primary focus:border-primary" } %>
+      </div>
+
+      <!-- Дата заезда с -->
+      <div class="md:col-span-2 space-y-1">
+        <%= f.label :start_date, 'Заезд с', class: "block text-xs font-bold text-gray-400 uppercase" %>
+        <%= f.date_field :start_date, value: params[:start_date], class: "w-full px-4 py-2.5 border border-gray-200 rounded-xl text-dark text-sm focus:ring-2 focus:ring-primary focus:border-primary" %>
+      </div>
+
+      <!-- Дата выезда по -->
+      <div class="md:col-span-2 space-y-1">
+        <%= f.label :end_date, 'Выезд по', class: "block text-xs font-bold text-gray-400 uppercase" %>
+        <%= f.date_field :end_date, value: params[:end_date], class: "w-full px-4 py-2.5 border border-gray-200 rounded-xl text-dark text-sm focus:ring-2 focus:ring-primary focus:border-primary" %>
+      </div>
+
+      <!-- Кнопки отправки / сброса -->
+      <div class="md:col-span-2 flex gap-2">
+        <%= f.submit 'Найти', class: "flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-2.5 px-4 rounded-xl transition-colors text-sm cursor-pointer text-center" %>
+        <%= link_to 'Сбросить', admin_bookings_path, class: "flex-1 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-dark font-bold py-2.5 px-4 rounded-xl transition-colors text-sm text-center flex items-center justify-center" %>
+      </div>
+    <% end %>
+  </div>
+
   <% if @bookings.any? %>
     <div class="bg-white rounded-2xl shadow-card overflow-hidden">
       <table class="min-w-full divide-y divide-gray-100">
@@ -54,7 +97,10 @@
     </div>
   <% else %>
     <div class="bg-white rounded-2xl shadow-card p-12 text-center">
-      <h3 class="text-lg font-semibold text-gray-500">Бронирований в системе пока нет</h3>
+      <h3 class="text-lg font-semibold text-gray-500">
+        <%= (params[:query].present? || params[:status].present? || params[:start_date].present? || params[:end_date].present?) ? 'Ничего не найдено по вашему запросу' : 'Бронирований в системе пока нет' %>
+      </h3>
+      <p class="text-gray-400 mt-2 text-sm">Попробуйте изменить параметры фильтрации или сбросить их.</p>
     </div>
   <% end %>
 </div>
