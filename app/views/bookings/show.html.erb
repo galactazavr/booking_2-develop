@@ -44,6 +44,18 @@
         </div>
       </div>
 
+      <% if @booking.cancelled? && @booking.cancellation_reason.present? %>
+        <div class="bg-red-50/50 border-b border-red-100 p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+          </div>
+          <div>
+            <h4 class="font-bold text-red-800 mb-1">Причина отмены бронирования</h4>
+            <p class="text-red-700 text-sm"><%= @booking.cancellation_reason %></p>
+          </div>
+        </div>
+      <% end %>
+
       <!-- Основная инфа -->
       <div class="p-8">
         
@@ -52,6 +64,10 @@
           <div class="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-gray-200">
             <% if @booking.room.hotel.photos.attached? && @booking.room.hotel.photos.first.present? %>
               <%= image_tag @booking.room.hotel.photos.first, class: "w-full h-full object-cover" %>
+            <% elsif @booking.room.hotel.image_url.present? %>
+              <%= image_tag @booking.room.hotel.image_url, class: "w-full h-full object-cover" %>
+            <% else %>
+              <div class="w-full h-full flex items-center justify-center text-3xl">🏨</div>
             <% end %>
           </div>
           <div>
@@ -97,6 +113,23 @@
                 <span class="text-gray-500">Количество гостей:</span>
                 <span class="font-bold text-dark"><%= @booking.guests_count %> чел.</span>
               </div>
+              <% if @booking.guest_name.present? %>
+                <div class="pt-4 border-t border-gray-100 space-y-2">
+                  <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Данные гостя</div>
+                  <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-500">ФИО:</span>
+                    <span class="font-bold text-dark"><%= @booking.guest_name %></span>
+                  </div>
+                  <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-500">Телефон:</span>
+                    <span class="font-bold text-dark"><%= @booking.guest_phone %></span>
+                  </div>
+                  <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-500">Паспорт:</span>
+                    <span class="font-bold text-dark"><%= @booking.guest_passport %></span>
+                  </div>
+                </div>
+              <% end %>
               <% if @booking.special_requests.present? %>
                 <div class="pt-4 border-t border-gray-100">
                   <span class="block text-gray-500 text-sm mb-1">Особые пожелания:</span>
