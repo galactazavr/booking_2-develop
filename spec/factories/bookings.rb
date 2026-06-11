@@ -9,6 +9,9 @@ FactoryBot.define do
     guests_count { 2 }
     total_price { 15_000.0 }
     status { 'pending' }
+    guest_name { "Иван Тестовый" }
+    guest_phone { "+79991112233" }
+    guest_passport { "1234 567890" }
 
     trait :confirmed do
       status { 'confirmed' }

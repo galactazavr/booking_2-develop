@@ -72,30 +72,30 @@
 
   <!-- Галерея фото -->
   <div class="grid grid-cols-1 md:grid-cols-4 gap-2 h-[40vh] md:h-[60vh] rounded-2xl overflow-hidden mb-12">
-    <% if @hotel.photos.attached? %>
+    <% if @hotel.photos.attached? && @hotel.photos.present? %>
       <div class="col-span-1 md:col-span-2 row-span-2 h-full">
-        <%= image_tag @hotel.photos[0], class: "w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer" %>
+        <%= image_tag @hotel.photos[0], onclick: "openLightbox(0)", class: "w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer lightbox-trigger" %>
       </div>
-      <% @hotel.photos[1..4].each do |photo| %>
+      <% @hotel.photos[1..4].each_with_index do |photo, index| %>
         <div class="col-span-1 h-full hidden md:block">
-          <%= image_tag photo, class: "w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer" %>
+          <%= image_tag photo, onclick: "openLightbox(#{index + 1})", class: "w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer lightbox-trigger" %>
         </div>
       <% end %>
     <% elsif @hotel.image_url.present? %>
       <div class="col-span-1 md:col-span-2 row-span-2 h-full">
-        <img src="<%= @hotel.image_url %>" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer" alt="<%= @hotel.name %>">
+        <img src="<%= @hotel.image_url %>" onclick="openLightbox(0)" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer lightbox-trigger" alt="<%= @hotel.name %>">
       </div>
       <div class="col-span-1 h-full hidden md:block">
-        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80" onclick="openLightbox(1)" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer lightbox-trigger">
       </div>
       <div class="col-span-1 h-full hidden md:block">
-        <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=600&q=80" onclick="openLightbox(2)" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer lightbox-trigger">
       </div>
       <div class="col-span-1 h-full hidden md:block">
-        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" onclick="openLightbox(3)" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer lightbox-trigger">
       </div>
       <div class="col-span-1 h-full hidden md:block">
-        <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=600&q=80" onclick="openLightbox(4)" class="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer lightbox-trigger">
       </div>
     <% else %>
       <div class="col-span-1 md:col-span-2 row-span-2 h-full bg-gray-200 flex items-center justify-center">
@@ -269,6 +269,42 @@
   </div>
 </div>
 
+<!-- Lightbox Modal -->
+<div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex flex-col justify-between p-4 transition-all duration-300 opacity-0">
+  <!-- Top Bar -->
+  <div class="flex justify-between items-center text-white px-4 py-2 z-10">
+    <div id="lightboxCounter" class="text-sm font-semibold tracking-wider opacity-80">1 / 5</div>
+    <div class="flex items-center gap-4">
+      <button onclick="zoomLightbox(-0.2)" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer text-xl font-bold" title="Уменьшить">-</button>
+      <button onclick="zoomLightbox(0.2)" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer text-xl font-bold" title="Увеличить">+</button>
+      <button onclick="closeLightbox()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer text-2xl font-light" title="Закрыть">&times;</button>
+    </div>
+  </div>
+
+  <!-- Center Image Container -->
+  <div class="flex-grow flex items-center justify-center relative overflow-hidden">
+    <!-- Prev Button -->
+    <button onclick="prevLightbox()" class="absolute left-4 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer" title="Назад">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+    </button>
+
+    <!-- Main Image -->
+    <div id="lightboxImageWrapper" class="transition-transform duration-200 ease-out select-none cursor-grab active:cursor-grabbing max-h-[80vh] max-w-[90vw]" style="transform: scale(1) translate(0px, 0px);">
+      <img id="lightboxImage" src="" class="max-h-[80vh] max-w-[90vw] object-contain rounded-lg shadow-2xl pointer-events-none">
+    </div>
+
+    <!-- Next Button -->
+    <button onclick="nextLightbox()" class="absolute right-4 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer" title="Вперед">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+    </button>
+  </div>
+
+  <!-- Bottom Caption -->
+  <div class="text-center text-white/80 text-sm py-4 z-10 font-medium" id="lightboxCaption">
+    <%= @hotel.name %>
+  </div>
+</div>
+
 <script>
   function toggleFav(id){
     fetch('/favorites/toggle/' + id, {
@@ -279,6 +315,104 @@
       }
     }).then(() => {
       location.reload();
+    });
+  }
+
+  let lightboxImages = [];
+  let currentLightboxIndex = 0;
+  let currentZoom = 1;
+
+  function initLightbox() {
+    const triggers = document.querySelectorAll('.lightbox-trigger');
+    lightboxImages = Array.from(triggers).map(img => img.src || img.getAttribute('src'));
+  }
+
+  function openLightbox(index) {
+    if (lightboxImages.length === 0) initLightbox();
+    currentLightboxIndex = index;
+    currentZoom = 1;
+    updateLightboxImage();
+    
+    const modal = document.getElementById('lightboxModal');
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modal.classList.remove('opacity-0');
+    }, 10);
+    
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    const modal = document.getElementById('lightboxModal');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300);
+    document.body.style.overflow = '';
+  }
+
+  function prevLightbox() {
+    currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+    currentZoom = 1;
+    updateLightboxImage();
+  }
+
+  function nextLightbox() {
+    currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length;
+    currentZoom = 1;
+    updateLightboxImage();
+  }
+
+  function zoomLightbox(factor) {
+    currentZoom = Math.max(0.5, Math.min(3, currentZoom + factor));
+    const wrapper = document.getElementById('lightboxImageWrapper');
+    wrapper.style.transform = `scale(${currentZoom})`;
+  }
+
+  function updateLightboxImage() {
+    const imgUrl = lightboxImages[currentLightboxIndex];
+    document.getElementById('lightboxImage').src = imgUrl;
+    document.getElementById('lightboxCounter').textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
+    document.getElementById('lightboxImageWrapper').style.transform = `scale(1)`;
+  }
+
+  // Handle keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('lightboxModal');
+    if (modal && !modal.classList.contains('hidden')) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevLightbox();
+      if (e.key === 'ArrowRight') nextLightbox();
+      if (e.key === '+' || e.key === '=') zoomLightbox(0.2);
+      if (e.key === '-') zoomLightbox(-0.2);
+    }
+  });
+
+  // Touch and drag panning logic for zoom
+  let isDragging = false;
+  let startX = 0, startY = 0;
+  let translateX = 0, translateY = 0;
+
+  const wrapper = document.getElementById('lightboxImageWrapper');
+  if (wrapper) {
+    wrapper.addEventListener('mousedown', (e) => {
+      if (currentZoom <= 1) return;
+      isDragging = true;
+      startX = e.clientX - translateX;
+      startY = e.clientY - translateY;
+      wrapper.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      translateX = e.clientX - startX;
+      translateY = e.clientY - startY;
+      wrapper.style.transform = `scale(${currentZoom}) translate(${translateX / currentZoom}px, ${translateY / currentZoom}px)`;
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      if (wrapper) wrapper.style.cursor = currentZoom > 1 ? 'grab' : 'default';
     });
   }
 </script>

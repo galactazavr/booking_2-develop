@@ -59,7 +59,10 @@ RSpec.describe 'Bookings', type: :request do
             room_id: room.id,
             check_in: (Date.tomorrow + 5.days).to_s,
             check_out: (Date.tomorrow + 8.days).to_s,
-            guests_count: 2
+            guests_count: 2,
+            guest_name: 'Иван Иванов',
+            guest_phone: '+79991112233',
+            guest_passport: '1234 567890'
           }
         }
       end

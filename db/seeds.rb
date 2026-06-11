@@ -71,8 +71,9 @@ hotel_data = [
     base_price_per_night: 8500, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Стандарт 101', room_type: 'Стандарт', capacity: 2, area: 22, price: 5500, image_url: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Люкс 201', room_type: 'Люкс', capacity: 2, area: 45, price: 12000, image_url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Эконом 101', room_type: 'Эконом', capacity: 1, area: 15, price: 3000, image_url: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Стандарт 201', room_type: 'Стандарт', capacity: 2, area: 22, price: 5500, image_url: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Люкс 301', room_type: 'Люкс', capacity: 2, area: 45, price: 12000, image_url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80' }
     ]
   },
   {
@@ -82,8 +83,9 @@ hotel_data = [
     base_price_per_night: 4000, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Студия A1', room_type: 'Студия', capacity: 2, area: 28, price: 3500, image_url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Апартаменты B1', room_type: 'Люкс', capacity: 3, area: 50, price: 6500, image_url: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Студия Кози A1', room_type: 'Эконом', capacity: 1, area: 20, price: 2800, image_url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Апартаменты B1', room_type: 'Стандарт', capacity: 2, area: 28, price: 3500, image_url: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Люкс Апартаменты C1', room_type: 'Люкс', capacity: 3, area: 50, price: 6500, image_url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80' }
     ]
   },
   {
@@ -93,8 +95,9 @@ hotel_data = [
     base_price_per_night: 7500, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Дизайнерский люкс', room_type: 'Люкс', capacity: 2, area: 38, price: 9000, image_url: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Стандарт Арт', room_type: 'Стандарт', capacity: 2, area: 22, price: 6000, image_url: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Арт-Бюджет 102', room_type: 'Эконом', capacity: 1, area: 16, price: 4000, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Стандарт Арт 202', room_type: 'Стандарт', capacity: 2, area: 22, price: 6000, image_url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Дизайнерский люкс 302', room_type: 'Люкс', capacity: 2, area: 38, price: 9000, image_url: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80' }
     ]
   },
   {
@@ -104,8 +107,9 @@ hotel_data = [
     base_price_per_night: 1200, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Койка в общем номере', room_type: 'Эконом', capacity: 1, area: 6, price: 1200, image_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Приватный дабл', room_type: 'Стандарт', capacity: 2, area: 15, price: 2800, image_url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Койка в общем номере', room_type: 'Эконом', capacity: 1, area: 6, price: 1000, image_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Приватный сингл', room_type: 'Стандарт', capacity: 1, area: 10, price: 1800, image_url: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Приватный дабл', room_type: 'Люкс', capacity: 2, area: 15, price: 2800, image_url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80' }
     ]
   },
 
@@ -117,8 +121,9 @@ hotel_data = [
     base_price_per_night: 7000, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Классик 101', room_type: 'Стандарт', capacity: 2, area: 20, price: 4500, image_url: 'https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Панорама 201', room_type: 'Люкс', capacity: 2, area: 40, price: 9500, image_url: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Эконом Нева 101', room_type: 'Эконом', capacity: 1, area: 14, price: 3000, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Классик 201', room_type: 'Стандарт', capacity: 2, area: 20, price: 4500, image_url: 'https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Панорама 301', room_type: 'Люкс', capacity: 2, area: 40, price: 9500, image_url: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80' }
     ]
   },
   {
@@ -129,7 +134,8 @@ hotel_data = [
     image_url: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80',
     rooms: [
       { name: 'Койко-место 6-мест', room_type: 'Эконом', capacity: 1, area: 5, price: 900, image_url: 'https://images.unsplash.com/photo-1520277739336-7bf67edfa768?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Приватная комната', room_type: 'Стандарт', capacity: 2, area: 14, price: 2500, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Койко-место 4-мест', room_type: 'Стандарт', capacity: 1, area: 6, price: 1200, image_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Приватная комната', room_type: 'Люкс', capacity: 2, area: 14, price: 2500, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' }
     ]
   },
   {
@@ -139,8 +145,9 @@ hotel_data = [
     base_price_per_night: 15000, available_from: Date.today, available_to: Date.today + 12.months,
     image_url: 'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Исторический номер', room_type: 'Люкс', capacity: 2, area: 45, price: 18000, image_url: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Делюкс кинг', room_type: 'Стандарт', capacity: 2, area: 30, price: 13000, image_url: 'https://images.unsplash.com/photo-1611891487122-2075b9624448?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Эконом Исторический', room_type: 'Эконом', capacity: 1, area: 20, price: 8000, image_url: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Делюкс кинг', room_type: 'Стандарт', capacity: 2, area: 30, price: 13000, image_url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Исторический номер', room_type: 'Люкс', capacity: 2, area: 45, price: 18000, image_url: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80' }
     ]
   },
 
@@ -152,6 +159,7 @@ hotel_data = [
     base_price_per_night: 6000, available_from: Date.today, available_to: Date.today + 8.months,
     image_url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
     rooms: [
+      { name: 'Бюджетный стандарт 101', room_type: 'Эконом', capacity: 1, area: 16, price: 2900, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
       { name: 'Морской 101', room_type: 'Стандарт', capacity: 2, area: 25, price: 4200, image_url: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80' },
       { name: 'Бриз Люкс 201', room_type: 'Люкс', capacity: 2, area: 42, price: 8500, image_url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80' }
     ]
@@ -163,8 +171,9 @@ hotel_data = [
     base_price_per_night: 2800, available_from: Date.today, available_to: Date.today + 7.months,
     image_url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80',
     rooms: [
+      { name: 'Эконом Комната 1', room_type: 'Эконом', capacity: 1, area: 15, price: 1800, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
       { name: 'Комната 2', room_type: 'Стандарт', capacity: 2, area: 20, price: 2500, image_url: 'https://images.unsplash.com/photo-1605371924599-2d0365da1ae0?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Комната 3', room_type: 'Стандарт', capacity: 3, area: 25, price: 3200, image_url: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Комната 3', room_type: 'Люкс', capacity: 3, area: 25, price: 3200, image_url: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80' }
     ]
   },
   {
@@ -174,6 +183,7 @@ hotel_data = [
     base_price_per_night: 8000, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
     rooms: [
+      { name: 'Эконом Бизнес', room_type: 'Эконом', capacity: 1, area: 18, price: 4500, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
       { name: 'Панорамный Стандарт', room_type: 'Стандарт', capacity: 2, area: 28, price: 7500, image_url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80' },
       { name: 'Люкс с джакузи', room_type: 'Люкс', capacity: 2, area: 55, price: 15000, image_url: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80' }
     ]
@@ -187,8 +197,9 @@ hotel_data = [
     base_price_per_night: 4500, available_from: Date.today, available_to: Date.today + 5.months,
     image_url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Стандарт 201', room_type: 'Стандарт', capacity: 2, area: 24, price: 3800, image_url: 'https://images.unsplash.com/photo-1611891487122-2075b9624448?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Студия 301', room_type: 'Студия', capacity: 2, area: 35, price: 5200, image_url: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Эконом 101', room_type: 'Эконом', capacity: 1, area: 16, price: 2500, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Стандарт 201', room_type: 'Стандарт', capacity: 2, area: 24, price: 3800, image_url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Студия 301', room_type: 'Люкс', capacity: 2, area: 35, price: 5200, image_url: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80' }
     ]
   },
   {
@@ -199,7 +210,8 @@ hotel_data = [
     image_url: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1200&q=80',
     rooms: [
       { name: 'Место в мужском номере', room_type: 'Эконом', capacity: 1, area: 6, price: 950, image_url: 'https://images.unsplash.com/photo-1520277739336-7bf67edfa768?auto=format&fit=crop&w=800&q=80' },
-      { name: 'Место в женском номере', room_type: 'Эконом', capacity: 1, area: 6, price: 950, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Место в женском номере', room_type: 'Эконом', capacity: 1, area: 6, price: 950, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Приватная комната Комфорт', room_type: 'Люкс', capacity: 2, area: 15, price: 2200, image_url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80' }
     ]
   },
 
@@ -211,6 +223,7 @@ hotel_data = [
     base_price_per_night: 9500, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80',
     rooms: [
+      { name: 'Бюджетный стандарт', room_type: 'Эконом', capacity: 1, area: 18, price: 5500, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
       { name: 'Стандарт с видом на море', room_type: 'Стандарт', capacity: 2, area: 28, price: 9500, image_url: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=800&q=80' },
       { name: 'Полулюкс Семейный', room_type: 'Люкс', capacity: 4, area: 48, price: 16000, image_url: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80' }
     ]
@@ -222,7 +235,9 @@ hotel_data = [
     base_price_per_night: 1100, available_from: Date.today, available_to: Date.today + 6.months,
     image_url: 'https://images.unsplash.com/photo-1568495248636-6432b97bd949?auto=format&fit=crop&w=1200&q=80',
     rooms: [
-      { name: 'Место в общем дорме', room_type: 'Эконом', capacity: 1, area: 5, price: 1100, image_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80' }
+      { name: 'Место в общем дорме', room_type: 'Эконом', capacity: 1, area: 5, price: 1100, image_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Место в 4-местном номере', room_type: 'Стандарт', capacity: 1, area: 6, price: 1400, image_url: 'https://images.unsplash.com/photo-1520277739336-7bf67edfa768?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Двухместный номер', room_type: 'Люкс', capacity: 2, area: 12, price: 2500, image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' }
     ]
   }
 ]
@@ -329,21 +344,24 @@ puts "📅 Создание бронирований..."
 b1 = Booking.new(
   user: clients[0], room: hotels[0].rooms.first,
   check_in: 1.month.ago.to_date, check_out: 1.month.ago.to_date + 3.days,
-  guests_count: 2, total_price: 16500, status: 'completed'
+  guests_count: 2, total_price: 16500, status: 'completed',
+  guest_name: 'Иван Сидоров', guest_phone: '+7 910 100-10-01', guest_passport: '4510 123456'
 )
 b1.save!(validate: false)
 
 b2 = Booking.new(
   user: clients[1], room: hotels[4].rooms.first,
   check_in: 3.weeks.ago.to_date, check_out: 3.weeks.ago.to_date + 5.days,
-  guests_count: 1, total_price: 22500, status: 'completed'
+  guests_count: 1, total_price: 22500, status: 'completed',
+  guest_name: 'Елена Кузнецова', guest_phone: '+7 910 200-20-02', guest_passport: '4511 234567'
 )
 b2.save!(validate: false)
 
 b3 = Booking.new(
   user: clients[2], room: hotels[7].rooms.first,
   check_in: 2.weeks.ago.to_date, check_out: 2.weeks.ago.to_date + 4.days,
-  guests_count: 2, total_price: 16800, status: 'completed'
+  guests_count: 2, total_price: 16800, status: 'completed',
+  guest_name: 'Артём Новиков', guest_phone: '+7 910 300-30-03', guest_passport: '4512 345678'
 )
 b3.save!(validate: false)
 
@@ -351,24 +369,29 @@ b3.save!(validate: false)
 Booking.create!(
   user: clients[0], room: hotels[0].rooms.second,
   check_in: 2.weeks.from_now.to_date, check_out: 2.weeks.from_now.to_date + 4.days,
-  guests_count: 2, total_price: 48000, status: 'confirmed'
+  guests_count: 2, total_price: 48000, status: 'confirmed',
+  guest_name: 'Иван Сидоров', guest_phone: '+7 910 100-10-01', guest_passport: '4510 123456'
 )
 Booking.create!(
-  user: clients[1], room: hotels[4].rooms.second,
+  user: clients[1], room: hotels[4].rooms.last,
   check_in: 3.weeks.from_now.to_date, check_out: 3.weeks.from_now.to_date + 7.days,
-  guests_count: 2, total_price: 57000, status: 'pending'
+  guests_count: 2, total_price: 57000, status: 'pending',
+  guest_name: 'Елена Кузнецова', guest_phone: '+7 910 200-20-02', guest_passport: '4511 234567'
 )
 Booking.create!(
-  user: clients[2], room: hotels[10].rooms.first,
+  user: clients[2], room: hotels[10].rooms.last,
   check_in: 1.month.from_now.to_date, check_out: 1.month.from_now.to_date + 3.days,
-  guests_count: 2, total_price: 7600, status: 'confirmed'
+  guests_count: 2, total_price: 7600, status: 'confirmed',
+  guest_name: 'Артём Новиков', guest_phone: '+7 910 300-30-03', guest_passport: '4512 345678'
 )
 
 # Отменённые
 Booking.create!(
   user: clients[4], room: hotels[0].rooms.first,
   check_in: 1.week.from_now.to_date, check_out: 1.week.from_now.to_date + 2.days,
-  guests_count: 1, total_price: 11000, status: 'cancelled'
+  guests_count: 1, total_price: 11000, status: 'cancelled',
+  guest_name: 'Николай Волков', guest_phone: '+7 910 500-50-05', guest_passport: '4514 567890',
+  cancellation_reason: 'Изменение планов поездки'
 )
 
 puts "   ✅ #{Booking.count} бронирований создано"
@@ -405,7 +428,8 @@ hotels.first(3).each_with_index do |hotel, i|
   eb = Booking.new(
     user: client, room: hotel.rooms.first,
     check_in: (i + 2).weeks.ago.to_date, check_out: (i + 2).weeks.ago.to_date + 3.days,
-    guests_count: 2, total_price: hotel.rooms.first.price_per_night * 3, status: 'completed'
+    guests_count: 2, total_price: hotel.rooms.first.price_per_night * 3, status: 'completed',
+    guest_name: client.full_name, guest_phone: client.phone.presence || '+7 910 000-00-00', guest_passport: '4510 000000'
   )
   eb.save!(validate: false)
   extra_bookings << eb
