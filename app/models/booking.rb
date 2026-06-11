@@ -23,6 +23,7 @@ class Booking < ApplicationRecord
 
   # == Validations ==
   validates :check_in, :check_out, :guests_count, :total_price, presence: true
+  validates :guest_name, :guest_phone, :guest_passport, presence: true, on: :create
   validates :guests_count, numericality: { greater_than: 0, less_than_or_equal_to: 10 }
   validates :total_price, numericality: { greater_than: 0 }
   validate :check_out_after_check_in
@@ -51,9 +52,10 @@ class Booking < ApplicationRecord
     pending? || confirmed?
   end
 
-  def cancel!
+  def cancel!(reason = nil)
     return false unless can_cancel?
 
+    self.cancellation_reason = reason if reason.present?
     cancelled!
   end
 

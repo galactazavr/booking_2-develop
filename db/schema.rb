@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_06_11_000201) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_11_112453) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "plpgsql"
@@ -54,6 +54,10 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_11_000201) do
     t.text "special_requests"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "guest_name"
+    t.string "guest_phone"
+    t.string "guest_passport"
+    t.text "cancellation_reason"
     t.index ["check_in", "check_out"], name: "index_bookings_on_check_in_and_check_out"
     t.index ["room_id", "check_in", "check_out"], name: "index_bookings_on_room_and_dates"
     t.index ["room_id"], name: "index_bookings_on_room_id"
@@ -61,7 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_11_000201) do
     t.index ["user_id"], name: "index_bookings_on_user_id"
     t.check_constraint "check_out > check_in", name: "chk_bookings_checkout_after_checkin"
     t.check_constraint "guests_count > 0", name: "chk_bookings_guests_count_positive"
-    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying::text, 'confirmed'::character varying::text, 'cancelled'::character varying::text, 'completed'::character varying::text])", name: "chk_bookings_status_values"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'confirmed'::character varying, 'cancelled'::character varying, 'completed'::character varying]::text[])", name: "chk_bookings_status_values"
     t.check_constraint "total_price > 0::numeric", name: "chk_bookings_total_price_positive"
     t.exclusion_constraint "room_id WITH =, daterange(check_in, check_out) WITH &&", where: "(status)::text <> 'cancelled'::text", using: :gist, name: "excl_bookings_no_overlap"
   end
@@ -191,7 +195,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_11_000201) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
-    t.check_constraint "role::text = ANY (ARRAY['user'::character varying::text, 'supervisor'::character varying::text, 'admin'::character varying::text])", name: "chk_users_role_values"
+    t.check_constraint "role::text = ANY (ARRAY['user'::character varying, 'supervisor'::character varying, 'admin'::character varying]::text[])", name: "chk_users_role_values"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
