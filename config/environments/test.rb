@@ -17,6 +17,6 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
   config.active_record.verbose_query_logs = true
 
-  # Whitelist all hosts in test environment to bypass HostAuthorization middleware in RSpec
+  # Clear hosts whitelist in test environment to bypass HostAuthorization middleware in RSpec
   config.hosts.clear
 end

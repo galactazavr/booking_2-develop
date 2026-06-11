@@ -18,12 +18,36 @@ class Supervisor::DashboardController < ApplicationController
   end
 
   def create_hotel
-    @hotel = current_user.hotels.build(hotel_params)
+    # Filter out room_category from direct hotel params since it's processed separately
+    filtered_params = hotel_params.except(:room_category)
+    @hotel = current_user.hotels.build(filtered_params)
     @hotel.status = 'review' # Принудительно отправляем на модерацию
 
-    if @hotel.save
-      redirect_to supervisor_success_path(type: 'hotel', id: @hotel.id), notice: 'Отель создан и отправлен на модерацию администратору'
-    else
+    ActiveRecord::Base.transaction do
+      if @hotel.save
+        category_params = params.dig(:hotel, :room_category)
+        if category_params.present?
+          quantity = category_params[:quantity].to_i
+          quantity = 1 if quantity < 1
+          quantity.times do |i|
+            @hotel.rooms.create!(
+              name: "#{category_params[:name]} ##{i + 1}",
+              room_type: category_params[:room_type],
+              capacity: category_params[:capacity],
+              area: category_params[:area],
+              price_per_night: category_params[:price_per_night],
+              available: true,
+              description: "#{category_params[:room_type]} номер, площадь #{category_params[:area]} м², до #{category_params[:capacity]} гостей"
+            )
+          end
+        end
+        redirect_to supervisor_success_path(type: 'hotel', id: @hotel.id), notice: 'Отель создан и отправлен на модерацию администратору'
+      else
+        raise ActiveRecord::Rollback
+      end
+    end
+
+    unless @hotel.persisted?
       render :new_hotel, status: :unprocessable_entity
     end
   end
@@ -90,7 +114,7 @@ class Supervisor::DashboardController < ApplicationController
   end
 
   def hotel_params
-    params.require(:hotel).permit(:name, :hotel_type, :city, :address, :description, :chain, :base_price_per_night, :available_from, :available_to, photos: [])
+    params.require(:hotel).permit(:name, :hotel_type, :city, :address, :description, :chain, :base_price_per_night, :available_from, :available_to, photos: [], room_category: [:room_type, :name, :capacity, :area, :price_per_night, :quantity])
   end
 
   def property_params

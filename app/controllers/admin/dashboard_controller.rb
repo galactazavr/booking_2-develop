@@ -9,8 +9,24 @@ class Admin::DashboardController < ApplicationController
   def index
     @hotels = Hotel.review.includes(:user).order(created_at: :desc)
     @properties = Property.review.includes(:user).order(created_at: :desc)
-    @history_hotels = Hotel.where(status: ['active', 'rejected']).includes(:user).order(updated_at: :desc).limit(10)
-    @history_properties = Property.where(status: ['active', 'rejected']).includes(:user).order(updated_at: :desc).limit(10)
+    @history_hotels = Hotel.where(status: ['active', 'rejected', 'deleted']).includes(:user).order(updated_at: :desc)
+    @history_properties = Property.where(status: ['active', 'rejected', 'deleted']).includes(:user).order(updated_at: :desc)
+
+    if params[:city].present?
+      @history_hotels = @history_hotels.where('city ILIKE ?', "%#{params[:city]}%")
+      @history_properties = @history_properties.where('city ILIKE ?', "%#{params[:city]}%")
+    end
+
+    if params[:hotel_type].present?
+      @history_hotels = @history_hotels.where(hotel_type: params[:hotel_type])
+    end
+
+    if params[:property_type].present?
+      @history_properties = @history_properties.where(property_type: params[:property_type])
+    end
+
+    @history_hotels = @history_hotels.limit(15)
+    @history_properties = @history_properties.limit(15)
   end
 
   def approve_hotel

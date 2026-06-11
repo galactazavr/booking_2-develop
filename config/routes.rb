@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'search', to: 'hotels#search', as: :search_hotels
 
   # Hotels, Rooms & Reviews
-  resources :hotels, only: [:index, :show] do
+  resources :hotels, only: [:index, :show, :destroy] do
     resources :rooms, only: [:index, :show]
     resources :reviews, only: [:create, :destroy]
   end
@@ -29,8 +29,11 @@ Rails.application.routes.draw do
     post 'toggle/:hotel_id', to: 'favorites#toggle', as: :toggle
   end
 
+  # Notifications
+  resources :notifications, only: [:index, :destroy]
+
   # Properties
-  resources :properties, only: [:show]
+  resources :properties, only: [:show, :destroy]
 
   # Static pages
   get 'help', to: 'pages#help', as: :help_page

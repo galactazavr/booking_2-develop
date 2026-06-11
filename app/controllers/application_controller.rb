@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :update_completed_bookings
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -16,6 +17,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def update_completed_bookings
+    Booking.update_completed_bookings!
+  end
 
   def user_not_authorized
     flash[:alert] = 'У вас нет доступа к этому действию.'

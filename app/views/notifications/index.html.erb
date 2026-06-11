@@ -1,0 +1,51 @@
+<div class="bg-gray-50 min-h-screen pt-12 pb-24">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-10 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-bold text-dark mb-2">Уведомления</h1>
+        <p class="text-gray-500 text-lg">Важные сообщения о ваших бронированиях</p>
+      </div>
+    </div>
+
+    <% if @notifications.any? %>
+      <div class="space-y-4">
+        <% @notifications.each do |notification| %>
+          <div class="bg-white border <%= notification.read? ? 'border-gray-100' : 'border-primary-light bg-primary-light/10' %> rounded-2xl p-6 shadow-sm flex items-start justify-between gap-4 transition-all hover:shadow-md">
+            <div class="flex-grow">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="w-2 h-2 rounded-full <%= notification.read? ? 'bg-gray-300' : 'bg-primary animate-pulse' %>"></span>
+                <h3 class="font-bold text-lg text-dark"><%= notification.title %></h3>
+                <span class="text-xs text-gray-400"><%= l(notification.created_at, format: :short) %></span>
+              </div>
+              <p class="text-gray-600 leading-relaxed"><%= notification.message %></p>
+              <% if notification.booking %>
+                <div class="mt-4">
+                  <%= link_to 'Детали бронирования', booking_path(notification.booking), class: 'inline-flex items-center gap-1 text-sm font-bold text-primary hover:text-primary-dark transition-colors' %>
+                </div>
+              <% end %>
+            </div>
+            <%= button_to notification_path(notification), method: :delete, class: 'text-gray-400 hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-gray-50', title: 'Удалить уведомление' do %>
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mt-8 flex justify-center">
+        <%= paginate @notifications %>
+      </div>
+    <% else %>
+      <div class="bg-white rounded-3xl p-16 text-center shadow-sm border border-gray-100">
+        <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-dark mb-2">Уведомлений пока нет</h2>
+        <p class="text-gray-500 text-lg">Мы будем присылать вам сообщения об изменении статуса ваших бронирований.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

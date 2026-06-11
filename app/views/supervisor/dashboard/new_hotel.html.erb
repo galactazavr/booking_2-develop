@@ -75,6 +75,43 @@
         <%= f.file_field :photos, multiple: true, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark bg-white cursor-pointer" %>
       </div>
 
+      <% unless @hotel.persisted? %>
+        <div class="pt-6 border-t border-gray-100 space-y-4">
+          <h3 class="text-xl font-bold text-dark">Первая категория номеров</h3>
+          <p class="text-xs text-gray-400">При добавлении отеля требуется указать одну начальную категорию номеров и их количество.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-1">
+              <label class="block text-sm font-bold text-dark">Категория (Тип номера)</label>
+              <%= select_tag "hotel[room_category][room_type]", options_for_select(Room::ROOM_TYPES), class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark bg-white cursor-pointer" %>
+            </div>
+            <div class="space-y-1">
+              <label class="block text-sm font-bold text-dark">Название номера</label>
+              <%= text_field_tag "hotel[room_category][name]", "Стандартный номер", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", required: true %>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="space-y-1">
+              <label class="block text-sm font-bold text-dark">Вместимость (чел.)</label>
+              <%= number_field_tag "hotel[room_category][capacity]", 2, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", required: true, min: 1, max: 10 %>
+            </div>
+            <div class="space-y-1">
+              <label class="block text-sm font-bold text-dark">Площадь (м²)</label>
+              <%= number_field_tag "hotel[room_category][area]", 25, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", required: true, min: 1 %>
+            </div>
+            <div class="space-y-1">
+              <label class="block text-sm font-bold text-dark">Цена за ночь (₽)</label>
+              <%= number_field_tag "hotel[room_category][price_per_night]", 3000, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", required: true, min: 1 %>
+            </div>
+            <div class="space-y-1">
+              <label class="block text-sm font-bold text-dark">Количество</label>
+              <%= number_field_tag "hotel[room_category][quantity]", 5, class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary text-dark", required: true, min: 1, max: 50 %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <div class="pt-6 border-t border-gray-100">
         <%= f.submit @hotel.persisted? ? "Сохранить изменения" : "Добавить объект", class: "w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 px-6 rounded-xl transition-colors cursor-pointer text-lg" %>
       </div>
