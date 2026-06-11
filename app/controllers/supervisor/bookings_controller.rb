@@ -32,7 +32,8 @@ class Supervisor::BookingsController < ApplicationController
   end
 
   def cancel
-    if @booking.cancel!
+    reason = params[:cancellation_reason]
+    if @booking.cancel!(reason)
       redirect_back fallback_location: supervisor_booking_path(@booking), notice: 'Бронирование отменено.'
     else
       redirect_back fallback_location: supervisor_booking_path(@booking), alert: 'Невозможно отменить это бронирование.'
