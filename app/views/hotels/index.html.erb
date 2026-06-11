@@ -87,27 +87,6 @@
   </section>
 <% end %>
 
-<!-- CTA секция -->
-<section class="py-16 md:py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-primary rounded-3xl overflow-hidden relative shadow-lg">
-      <div class="absolute top-0 right-0 w-1/2 h-full opacity-10">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full fill-current text-white"><polygon points="0,100 100,0 100,100"/></svg>
-      </div>
-      <div class="relative z-10 px-8 py-12 md:p-16 flex flex-col md:flex-row items-center justify-between">
-        <div class="mb-8 md:mb-0 max-w-xl">
-          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Сдаете жилье?</h2>
-          <p class="text-primary-light text-lg mb-0">
-            Зарегистрируйтесь как супервайзор и начните принимать гостей со всего мира уже сегодня.
-          </p>
-        </div>
-        <div>
-          <%= link_to "Добавить объект", new_user_registration_path(account_type: :supervisor), class: "inline-block bg-white text-primary font-bold px-8 py-4 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all", data: { turbo: false } %>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Скрипт для работы кнопки избранного -->
 <script>
