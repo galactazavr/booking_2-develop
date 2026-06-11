@@ -17,12 +17,18 @@ class Admin::DashboardController < ApplicationController
       @history_properties = @history_properties.where('city ILIKE ?', "%#{params[:city]}%")
     end
 
-    if params[:hotel_type].present?
-      @history_hotels = @history_hotels.where(hotel_type: params[:hotel_type])
-    end
-
-    if params[:property_type].present?
-      @history_properties = @history_properties.where(property_type: params[:property_type])
+    if params[:accommodation_type].present?
+      case params[:accommodation_type]
+      when 'Отель'
+        @history_hotels = @history_hotels.where(hotel_type: ['Отель', 'База отдыха', 'Санаторий', 'Глэмпинг', 'Гостевой дом'])
+        @history_properties = Property.none
+      when 'Хостел'
+        @history_hotels = @history_hotels.where(hotel_type: 'Хостел')
+        @history_properties = Property.none
+      when 'Апартаменты'
+        @history_hotels = @history_hotels.where(hotel_type: 'Апарт-отель')
+        # All properties are apartments/flats/etc.
+      end
     end
 
     @history_hotels = @history_hotels.limit(15)

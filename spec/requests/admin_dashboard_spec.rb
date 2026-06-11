@@ -66,4 +66,29 @@ RSpec.describe 'Admin Dashboard', type: :request do
       expect(flash[:notice]).to include('Жильё отклонено')
     end
   end
+
+  describe 'History Filtering' do
+    let!(:active_hotel_moscow) { create(:hotel, status: 'active', city: 'Москва', hotel_type: 'Отель', user: supervisor) }
+    let!(:active_hostel_spb) { create(:hotel, status: 'active', city: 'Санкт-Петербург', hotel_type: 'Хостел', user: supervisor) }
+
+    before { sign_in admin }
+
+    it 'filters by city' do
+      get admin_root_path, params: { city: 'Москва' }
+      expect(response.body).to include(active_hotel_moscow.name)
+      expect(response.body).not_to include(active_hostel_spb.name)
+    end
+
+    it 'filters by accommodation type - Hotel' do
+      get admin_root_path, params: { accommodation_type: 'Отель' }
+      expect(response.body).to include(active_hotel_moscow.name)
+      expect(response.body).not_to include(active_hostel_spb.name)
+    end
+
+    it 'filters by accommodation type - Hostel' do
+      get admin_root_path, params: { accommodation_type: 'Хостел' }
+      expect(response.body).to include(active_hostel_spb.name)
+      expect(response.body).not_to include(active_hotel_moscow.name)
+    end
+  end
 end
